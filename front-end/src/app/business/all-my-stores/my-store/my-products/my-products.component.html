@@ -1,0 +1,18 @@
+<section style="overflow-y: auto;">
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title class="pt-2">View Products</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list style="border: 1px solid #f1f1f1; border-radius: 5px;">
+                <app-filters [values]="filters" (filterApplied)="filterApplied($event);"></app-filters>
+            </ion-list>
+
+            <div class="d-flex flex-wrap justify-content-around">
+                <div *ngFor="let product of products">
+                    <app-card [data]="product"></app-card>
+                </div>
+            </div>
+        </ion-card-content>
+    </ion-card>
+</section>

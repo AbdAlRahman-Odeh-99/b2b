@@ -1,0 +1,96 @@
+.staticCheckout{
+    padding-top: 0%;
+    padding-bottom: 0%;
+}
+.ioncard{
+    margin-top: 1%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 1%;
+    max-width: 576px;
+    align-items: center;
+}
+.ioncard2{
+    margin-top: 1%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 1%;
+    max-width: 576px;
+    align-items: center;
+}
+.row{
+    align-items: left;
+    justify-content: left;
+    border-bottom-style: groove;
+    border-bottom-width: 2px;
+}
+.totalPrice{
+    font-size: 15pt;
+    font-weight: bold;
+    color: black;
+}
+.totalText{
+    font-size: 12pt;
+    font-weight: normal;
+    color: black;
+}
+.totalCurrency{
+    font-size: 10pt;
+    font-weight: normal;
+    color: black;
+}
+.center{
+    align-items: center;
+}
+.price{
+    color: green;
+}
+.name{
+    font-weight: bold;
+}
+ion-content{
+    flex: auto;
+    height: 100%;
+    margin-bottom: 1%;
+}
+.scrollable{
+    position: absolute;
+    width: 100%;
+}
+.noScroll{
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+}
+/* $grid-breakpoints: (
+ xs: 0, // Phone (0px - 575px)
+ sm: 576px, // Tablet (576px - 767px)
+ md: 768px, // Tablet vertical (768px - 991px)
+ lg: 992px // Tablet horizontal, Desktop (992px and above)
+);
+$grid-max-widths: (
+ lg: 992px
+); */
+.quantityControls{
+    width: 372.562;
+    max-width: 
+    372.562;
+}
+.centeredItems{
+    align-items: center;
+}
+.quantityButtons{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.quantityIcons{
+    width: 23.391px;
+    height: 23.391px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+/* .quantityGroup{
+    border-style: solid;
+    border-radius: 50px;
+    border-color: dimgray;
+} */

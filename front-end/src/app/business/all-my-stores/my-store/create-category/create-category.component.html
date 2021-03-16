@@ -1,0 +1,30 @@
+<section style="overflow-y: auto;">
+    <ion-card>
+        <ion-card-header class="d-flex justify-content-between">
+            <ion-card-title class="pt-2">Create Category</ion-card-title>
+            <ion-button color="success">Create</ion-button>
+        </ion-card-header>
+        <ion-card-content>
+            <div>
+                <ion-item>
+                    <ion-label position="floating">Name</ion-label>
+                    <ion-input></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Type</ion-label>
+                    <ion-input></ion-input>
+                </ion-item>
+            </div>
+            <div class="d-flex flex-wrap justify-content-around">
+                <div *ngFor="let image of images">
+                    <ion-img [src]="image" style="width: 200px; height: 200px;"></ion-img>
+                </div>
+            </div>
+            <input type="file" accept="image/*" #file class="d-none" (change)="uploadImage($event)">
+            <ion-button expand="full" (click)="takePhoto()"> Take photo
+            </ion-button>
+            <ion-button expand="full" (click)="file.click()"> Upload file
+            </ion-button>
+        </ion-card-content>
+    </ion-card>
+</section>

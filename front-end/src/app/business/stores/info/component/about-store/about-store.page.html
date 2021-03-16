@@ -1,0 +1,21 @@
+<section style="overflow-y: auto;">
+  <ion-card>
+    <ion-card-header class="d-flex flex-column align-items-baseline">
+      <ion-card-subtitle>{{ 'LOCATION' | translate }}: {{data.location}}</ion-card-subtitle>
+      <ion-card-title>{{ 'NAME' | translate }}: {{data.name}}</ion-card-title>
+    </ion-card-header>
+    <div class="d-flex justify-content-center">
+      <ion-img [src]="data.image" style="width: unset; height: unset;"></ion-img>
+    </div>
+    <ion-card-content>
+      <div class="d-flex">
+        <span>
+          {{ 'DESCRIPTION' | translate }}:
+        </span>
+      </div>
+      {{data.description}}
+    </ion-card-content>
+  </ion-card>
+
+
+</section>

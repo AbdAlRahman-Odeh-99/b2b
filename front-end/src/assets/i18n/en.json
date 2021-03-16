@@ -1,0 +1,15 @@
+{
+  "TEST": "test",
+  "STORES": "Stores",
+  "STORE": "Store",
+  "LOCATION": "Location",
+  "NAME": "Name",
+  "DESCRIPTION": "Description",
+  "CHAT": "Chat",
+  "HOME": "Home",
+  "CATEGORIES": "Categories",
+  "OFFERS": "Offers",
+  "SHOPPING_CART": "Shopping Cart",
+  "SETTING": "Settings",
+  "PRODUCTS": "Products"
+}

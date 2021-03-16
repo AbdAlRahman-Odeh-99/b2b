@@ -1,0 +1,70 @@
+<ion-app>
+  <ion-header>
+    <ion-toolbar>
+      <section class="d-flex justify-content-between">
+        <div class="d-flex">
+          <ion-buttons slot="start">
+            <ion-menu-button  ng-controller="RightController"></ion-menu-button>
+          </ion-buttons>
+          <ion-title>
+            B2B
+          </ion-title>
+        </div>
+        <div >
+          <ion-item>
+            <ion-avatar slot="start">
+              <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+            </ion-avatar>
+            <ion-label>Guest</ion-label>
+          </ion-item>
+        </div>
+      </section>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay" class="side-menu">
+      <ion-content>
+        <ion-list id="inbox-list" class="border-0 h-100">
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none"
+              detail="false" [class.selected]="selectedIndex == i">
+              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title | translate }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    
+    <!-- <ion-toolbar class="ion-no-border">
+      <ion-list>
+        <ion-item>
+          <ion-searchbar showCancelButton="focus" interface="popover"></ion-searchbar>
+        </ion-item>
+      </ion-list>
+    </ion-toolbar> -->
+    <ion-router-outlet class="test" id="main-content"></ion-router-outlet>
+
+  </ion-split-pane>
+  <!-- <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="dark">
+      <ion-icon md="caret-up" ios="chevron-up-circle-outline"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="light">
+        <ion-icon name="logo-facebook"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light">
+        <ion-icon name="logo-twitter"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light">
+        <ion-icon name="logo-vimeo"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light">
+        <ion-icon name="logo-google"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab> -->
+  
+</ion-app>

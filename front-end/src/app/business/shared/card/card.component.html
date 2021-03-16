@@ -1,0 +1,14 @@
+<ion-card class="card" style="width: 18rem;">
+    <img src="{{data.picture}}" class="card-img-top">
+    <div></div>
+    <div class="card-body">
+        <ion-card-header>
+            <ion-card-subtitle>in stock</ion-card-subtitle>
+            <ion-card-title>{{data.name}}</ion-card-title>
+        </ion-card-header>
+        <!-- <ion-card-content>
+            {{data.description | description: 1}}
+        </ion-card-content> -->
+        <a [routerLink]="[data.href, data._id || data.id, 'tabs']" class="btn btn-primary">View</a>
+    </div>
+</ion-card>

@@ -1,0 +1,41 @@
+<ion-card>
+  <ion-card-header>
+    <h1 style="color: black; font-weight: bold;">
+      Login
+    </h1>
+  </ion-card-header>
+  <ion-card-content [formGroup]="loginInfo">
+      <ion-item lines="full" class="margined">
+        <ion-label position="floating">Username</ion-label>
+        <ion-input type="username" formControlName="username" required></ion-input>
+      </ion-item>
+      <ion-item lines="full" class="margined">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" formControlName="password" required></ion-input>
+      </ion-item>
+      <ion-item lines="none" class="margined">
+        <ion-checkbox color="primary" slot="start" formControlName="rememberMe" name="rememberMe"></ion-checkbox>
+        <ion-label>Remember me</ion-label>
+      </ion-item>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <ion-button type="submit" size="default" [disabled]="!loginInfo.valid" (click)="loginFormLog()">Sign In</ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <a class="small-text" [routerLink]="pathOfResetPassword">Forgot Password</a>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <a class="small-text" [routerLink]="pathOfSignUpForCarOwner">Create account as car owner</a>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <a class="small-text" [routerLink]="pathOfSignUpForG1Owner">Create account as garage owner</a>
+        </ion-col>
+      </ion-row>
+  </ion-card-content>
+</ion-card>

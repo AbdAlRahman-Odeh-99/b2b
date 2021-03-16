@@ -1,0 +1,15 @@
+<div *ngIf="carInfo" [formGroup]="carInfo">
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Model</ion-label>
+    <ion-input type="text" formControlName="model"></ion-input>
+  </ion-item>
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Make</ion-label>
+    <ion-input type="text" formControlName="make"></ion-input>
+  </ion-item>
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Year</ion-label>
+    <ion-datetime display-format="YYYY" picker-format="YYYY" formControlName="year">
+    </ion-datetime>
+  </ion-item>
+</div>

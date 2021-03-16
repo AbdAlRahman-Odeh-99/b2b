@@ -1,0 +1,15 @@
+.open{
+    background-color: green;
+    color: white;
+    border:  1px solid transparent;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.close-store{
+    background-color: red;
+    color: white;
+    border:  1px solid transparent;
+    border-radius: 5px;
+    padding: 5px;
+}

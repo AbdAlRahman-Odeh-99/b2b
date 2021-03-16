@@ -1,0 +1,31 @@
+<div *ngIf="storeInfo" [formGroup]="storeInfo">
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Store name</ion-label>
+    <ion-input type="text" formControlName="name"></ion-input>
+  </ion-item>
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Open Time</ion-label>
+    <ion-datetime display-format="hh:mm A" picker-format="hh:mm A" formControlName="openTime">
+    </ion-datetime>
+  </ion-item>
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Close Time</ion-label>
+    <ion-datetime display-format="hh:mm A" picker-format="hh:mm A" formControlName="closeTime">
+    </ion-datetime>
+  </ion-item>
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Location</ion-label>
+    <ion-input type="text" formControlName="location"></ion-input>
+  </ion-item>
+  <ion-item class="margined">
+    <app-upload-image (getImageAsBase64)="getImageAsBase64($event)"></app-upload-image>
+  </ion-item>
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Description</ion-label>
+    <ion-textarea rows="4" formControlName="description"></ion-textarea>
+  </ion-item>
+  <ion-item lines="full" class="margined">
+    <ion-label position="floating">Tags</ion-label>
+    <ion-input type="text" formControlName="tags"></ion-input>
+  </ion-item>
+</div>

@@ -1,0 +1,24 @@
+<section style="overflow-y: auto;">
+    <ng-template [ngIf]="store" [ngIfElse]="cardInfoLoading">
+        <ion-card *ngIf="store">
+            <ion-card-header class="d-flex flex-column align-items-baseline">
+                <ion-card-subtitle>Location: {{store?.address || store?.location}}</ion-card-subtitle>
+                <ion-card-title>{{ 'NAME' | translate }}: {{store.name}}</ion-card-title>
+            </ion-card-header>
+            <div class="d-flex justify-content-center">
+                <ion-img [src]="store.image" style="width: unset; height: unset;"></ion-img>
+            </div>
+            <ion-card-content>
+                <div class="d-flex">
+                    <span>
+                        {{ 'DESCRIPTION' | translate }}:
+                    </span>
+                </div>
+                {{store.description}}
+            </ion-card-content>
+        </ion-card>
+    </ng-template>
+    <ng-template #cardInfoLoading>
+        <app-loading [type]="'card-info'"></app-loading>
+    </ng-template>
+</section>

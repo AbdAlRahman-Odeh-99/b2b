@@ -1,0 +1,89 @@
+<ion-content>
+	<form [formGroup]="cartForm" (ngSubmit)="onSubmit()">
+		<div class="scrollable">
+			<ion-card class="ioncard">
+
+				<ion-card-header>
+						<ion-card-title>Shopping Cart</ion-card-title>
+				</ion-card-header>
+
+					<ion-list>
+
+						<div formArrayName="items">
+							<div *ngFor="let item of itemsArray.controls; let i=index">
+								<div [formGroupName]="i">
+
+									<ion-item  class="row" lines="none">
+										<ion-grid float-left fixed>
+											<ion-row float-left>
+												
+													<ion-col style="max-width: 60px; max-height: 50px;">
+														<ion-avatar>
+															<ion-img style="max-width: 50px; max-height: 50px; object-fit: cover;" src="{{item.get('picture').value}}" class="card-img-top"></ion-img>
+														</ion-avatar>
+													</ion-col>
+													<ion-col>
+														<ion-label class="name"> {{item.get('name').value}} </ion-label>
+														<ion-label class="price"> {{ (item.get('price').value * item.get('quantity').value).toFixed(2) }} JOD </ion-label>
+													</ion-col>
+												
+											</ion-row>
+											<ion-row class="quantityGroup">
+												<ion-grid fixed>
+													
+													<ion-col>
+
+														<ion-button class="quantityButtons" *ngIf="item.get('quantity').value > 1" color="medium" fill="clear" (click)="minus(i)">
+															<ion-icon class="quantityIcons" name="remove-circle" slot="icon-only"></ion-icon>
+														</ion-button>
+														<ion-button class="quantityButtons" *ngIf="item.get('quantity').value === 1" color="medium" fill="clear" (click)="remove(i)">
+															<ion-icon class="quantityIcons" name="close-circle" slot="icon-only"></ion-icon>
+														</ion-button>
+																
+														{{ item.get('quantity').value}}
+													
+														<ion-button class="quantityButtons" color="medium" fill="clear" (click)="add(i)">
+															<ion-icon class="quantityIcons" name="add-circle" slot="icon-only"></ion-icon>
+														</ion-button>
+													
+														<ion-button style="float: right;" class="quantityButtons" color="medium" fill="clear" (click)="remove(i)">
+																<ion-icon name="close-circle" slot="icon-only"></ion-icon>
+														</ion-button>
+													</ion-col>
+
+												</ion-grid>
+											</ion-row>
+
+										</ion-grid>
+									</ion-item>
+
+
+								</div>
+							</div>
+						</div>
+
+					</ion-list>
+
+			</ion-card>
+		</div>
+
+		<div class="noScroll">
+			<ion-card class="ioncard2">
+				<ion-grid>
+					<ion-row style="align-items: center;">
+						<ion-col>
+							<ion-label class="totalText">Total: </ion-label>
+							<ion-label class="totalPrice">{{total.toFixed(2)}}</ion-label>
+							<ion-label class="totalCurrency"> JOD</ion-label>
+						</ion-col>
+						<ion-col>
+							<ion-button type="submit" style="float: right;">Checkout</ion-button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-card>
+		</div>
+
+	</form>
+
+</ion-content>
