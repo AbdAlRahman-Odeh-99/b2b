@@ -1,16 +1,1 @@
-<ion-card>
-    <ion-card-header>
-      <ion-card-title>Create Category</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-        <input type="button" (click)="takePhoto()" value="sd"> 
-        <ion-button expand="full" (onclick)="takePhoto()"> take photo
-            <!-- <ion-icon lazy="true" slot="start" name="image"></ion-icon>
-            <ion-label slot="end">Upload Image</ion-label>
-            <input type="file" (change)="" id="file-input"
-              accept="image/png, image/jpeg"> -->
-          </ion-button>
-          <!-- {{image}} -->
-          <img [src]="image">
-    </ion-card-content>
-  </ion-card>
+<a  (click)="presentModal()" class="btn btn-primary">{{ "VIEW" | translate }}</a>

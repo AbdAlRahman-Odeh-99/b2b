@@ -1,24 +1,52 @@
-<section style="overflow-y: auto;">
-    <ng-template [ngIf]="store" [ngIfElse]="cardInfoLoading">
-        <ion-card *ngIf="store">
-            <ion-card-header class="d-flex flex-column align-items-baseline">
-                <ion-card-subtitle>Location: {{store?.address || store?.location}}</ion-card-subtitle>
-                <ion-card-title>{{ 'NAME' | translate }}: {{store.name}}</ion-card-title>
-            </ion-card-header>
-            <div class="d-flex justify-content-center">
-                <ion-img [src]="store.image" style="width: unset; height: unset;"></ion-img>
-            </div>
-            <ion-card-content>
-                <div class="d-flex">
-                    <span>
-                        {{ 'DESCRIPTION' | translate }}:
-                    </span>
-                </div>
-                {{store.description}}
-            </ion-card-content>
-        </ion-card>
-    </ng-template>
-    <ng-template #cardInfoLoading>
-        <app-loading [type]="'card-info'"></app-loading>
-    </ng-template>
+<section class="container" style="overflow-y: auto">
+  <ng-template [ngIf]="store" [ngIfElse]="cardInfoLoading">
+    <ion-card *ngIf="store">
+      <div class="d-flex justify-content-center">
+        <ion-img
+          [src]="store.image"
+          style="width: 100%; max-height: 500px"
+        ></ion-img>
+      </div>
+      <ion-card-header class="d-flex flex-column align-items-baseline">
+        <ion-card-subtitle
+          >Location: {{ store?.address || store?.location }}</ion-card-subtitle
+        >
+        <div class="w-100 d-flex justify-content-between flex-wrap">
+          <ion-card-title
+            >{{ "NAME" | translate }}: {{ store.name }}</ion-card-title
+          >
+          <div>
+            <ion-button
+              *ngIf="isLoggedIn"
+              [color]="'danger'"
+              (click)="presentAlertConfirm()"
+              >Write Complaint</ion-button
+            >
+            <ion-button
+              *ngIf="isLoggedIn && userId != garageOwnerId && !isInContact"
+              [color]="'secondary'"
+              (click)="startChat()"
+              >Start Chat</ion-button
+            >
+            <ion-button
+              [color]="'secondary'"
+              *ngIf="isLoggedIn && userId != garageOwnerId && isInContact"
+              [disabled]="true"
+            >
+              chat already exists!
+            </ion-button>
+          </div>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="d-flex">
+          <span> {{ "DESCRIPTION" | translate }}: </span>
+        </div>
+        {{ store.description }}
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
 </section>
+<ng-template #cardInfoLoading>
+  <app-loading [type]="'card-info'"></app-loading>
+</ng-template>

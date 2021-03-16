@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -23,7 +24,8 @@ import { SharedModule } from '@app/shared/shared.module';
     SignUpRoutingModule,
     CommonModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    TranslateModule.forChild()
   ],
   providers: [
 

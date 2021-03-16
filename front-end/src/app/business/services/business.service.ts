@@ -1,73 +1,66 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { BasedUrlsConstants } from '@app/core/constants/routes';
+import { catchError } from 'rxjs/operators';
+import { ToastService } from '@app/shared/toaster/toast.service';
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'any',
 })
 export class BusinessService {
 
-  limit = 30;
-  skip = 0;
-  basedUrl = BasedUrlsConstants.BASED_URL_LOCALHOST;
+  basedUrl = BasedUrlsConstants.BASED_URL_LOCALHOST + '/';
+  errorLoading: EventEmitter<any> = new EventEmitter();
 
+  constructor(private http: HttpClient, private toastService: ToastService, private translate: TranslateService) { }
 
-  constructor(private http: HttpClient) { }
-
-  public setLimit(limit: number): boolean {
-    this.limit = limit;
-    return true;
-  }
-
-  public setSkip(skip: number): boolean {
-    this.skip = skip;
-    return true;
-  }
-
-  public setBothDataSkipAndLimit(limit: number, skip: number): boolean {
-    this.limit = limit;
-    this.skip = skip;
-    return true;
-  }
-
-  public resetBothDateSkipAndLimit(): boolean {
-    this.limit = 30;
-    this.skip = 0;
-    return true;
-  }
-
-  public getLimit(): number {
-    return this.limit;
-  }
-
-  public getSkip(): number {
-    return this.skip;
-  }
   public get(path: string, options?: any): Observable<any> {
-    const basedUrl = this.basedUrl.concat(path)
-      .concat(`?limit=${this.limit}`)
-      .concat(`&skip=${this.skip}`);
-    return this.http.get(basedUrl, options);
+    const basedUrl = this.basedUrl.concat(path);
+
+    return this.http.get(basedUrl, options).pipe(catchError((error) => this.error(error)));
   }
 
   public post(path: string, options?: any, body?: any): Observable<any> {
-    console.log(path, body)
     const basedUrl = this.basedUrl.concat(path);
-    return this.http.post(basedUrl,  body);
+    return this.http
+      .post(basedUrl, body, { ...options })
+      .pipe(catchError((error) => this.error(error)));
   }
 
   public put(path: string, options?: any, body?: any): Observable<any> {
     const basedUrl = this.basedUrl.concat(path);
-    return this.http.put(basedUrl, { options, body });
+    console.log(basedUrl)
+    return this.http.put(basedUrl, body, options).pipe(catchError((error) => this.error(error)));
   }
 
   public patch(path: string, options?: any, body?: any): Observable<any> {
     const basedUrl = this.basedUrl.concat(path);
-    return this.http.patch(basedUrl, { options, body });
+    return this.http.patch(basedUrl, body, options).pipe(catchError((error) => this.error(error)));
   }
-  public delete(path: string, options?: any, body?: any): Observable<any> {
+  public delete(path: string, options?: any): Observable<any> {
     const basedUrl = this.basedUrl.concat(path);
-    return this.http.delete(basedUrl, options);
+    return this.http.delete(basedUrl, options).pipe(catchError((error) => this.error(error)));
   }
 
+  private error(error: HttpErrorResponse) {
+    this.errorLoading.emit(true)
+    if(error?.error?.error){
+      this.translate.get(error.error.error).subscribe(res => {
+        this.translate.get('ERROR').subscribe(res1 => {
+          this.toastService.presentToastWithOptions(res1, res, 'danger');
+        });
+      });
+    }
+    else{
+      this.translate.get('ERROR_CONNECTING_WITH_BACKEND').subscribe(res => {
+        this.translate.get('ERROR').subscribe(res1 => {
+          this.toastService.presentToastWithOptions(res1, res, 'danger');
+        });
+      });
+    }
+    
+    
+    return throwError('Something bad happened; please try aga<  in later.');
+  }
 }

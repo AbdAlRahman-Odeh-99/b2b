@@ -1,0 +1,28 @@
+<section style="overflow-y: auto;" class="container search-results" infiniteScroll [infiniteScrollDistance]="0.5"
+  [infiniteScrollThrottle]="5" [scrollWindow]="false" (scrolled)="loadStores()" [infiniteScrollUpDistance]="1.5">
+  <div class="d-flex justify-content-between flex-wrap" style="height: 120px; overflow: hidden;">
+    <div>
+      <ion-label>
+        {{ "GET_LOCATION_FROM_MAP" | translate}}
+      </ion-label>
+      <ion-button color="secondary" (click)="applyLocationFromMap()" size="default">
+        {{ "APPLY" | translate }}
+      </ion-button>
+    </div>
+    <div>
+      <ion-button color="secondary" [disabled]="!lat || !long" (click)="getStoresNearBy()" size="default">
+        {{ "GET_STORE_NEAR_BY" | translate }}
+      </ion-button>
+    </div>
+  </div>
+  <div style="height: calc(100% - 120px);">
+    <ng-template [ngIf]="stores" [ngIfElse]="loading">
+      <div *ngFor="let store of stores; index as index">
+        <app-card [data]="store" [type]="'stores'"></app-card>
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #loading>
+    <app-loading [type]="'card'"></app-loading>
+  </ng-template>
+</section>

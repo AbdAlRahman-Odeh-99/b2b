@@ -9,7 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '@app/shared/shared.module';
 import { OffersComponent } from './component/offers/offers.component';
 import { ProductsComponent } from './component/products/products.component';
-import { CategoriesComponent } from './component/categories/categories.component';
 import { BusinessService } from '../../services/business.service';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { BusinessService } from '../../services/business.service';
     AboutStoreComponent,
     OffersComponent,
     ProductsComponent,
-    CategoriesComponent,
     AboutStoreComponent
   ],
   imports: [

@@ -1,1 +1,24 @@
-<p>products works!</p>
+<section style="overflow-y: auto;" class="container search-results" infiniteScroll [infiniteScrollDistance]="0.5"
+    [infiniteScrollThrottle]="5" [scrollWindow]="false" (scrolled)="getProducts()" [infiniteScrollUpDistance]="1.5">
+    <ion-card>
+        <ion-card-content>
+            <app-filters [values]="filters" (filterApplied)="filterApplied($event)"></app-filters>
+        </ion-card-content>
+    </ion-card>
+    <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
+        <ng-template [ngIf]="products && products.length !== 0" [ngIfElse]="noDataFound">
+            <div *ngFor="let product of products">
+                <app-card [data]="product" [type]="'products'"></app-card>
+            </div>
+        </ng-template>
+    </ng-template>
+</section>
+
+
+<ng-template #noDataFound>
+    <app-no-data-found class="h-100 w-100"></app-no-data-found>
+</ng-template>
+
+<ng-template #loading>
+    <app-loading [type]='"card"'></app-loading>
+</ng-template>

@@ -1,24 +1,25 @@
-<ion-content style="height: 100%;">
-    <ion-card style="display: block; height: calc(100% - 20px) ; overflow-y: auto;" class="d-flex flex-column justify-content-center ">
+<ion-content style="height: 100%; overflow-y: hidden;">
+    <ion-card style="display: block; height: calc(100% - 50px); overflow-y: hidden;" class="d-flex flex-column justify-content-center ">
         <ion-card-header>
-            <h1 style="color: black; font-weight: bold;">
-                {{headerName}}
+            <h1 style="font-weight: bold;">
+                {{headerName | translate}}
             </h1>
         </ion-card-header>
-        <ion-card-content >
-            <ion-list class="height-page" >
-                <div class="{{heightClassName}}">
-                    <ion-router-outlet></ion-router-outlet>¦
+        <ion-card-content style="height: calc(100% - 100px); overflow-y: hidden;">
+            <ion-list class="height-page" style="height: calc(100% - 50px);">
+                <div class="heightClassName" style="height: 100%;">
+                    <ion-router-outlet></ion-router-outlet>
                 </div>
-                <ion-item [lines]="'none'" class="mb-2">
-                    <div class="d-flex flex-wrap align-items-end w-100 justify-content-end">
-                        <ion-button (click)="backURL()" [color]="'secondary'" size="default">previous</ion-button>
-                        <ion-button [disabled]="disableNextButton || (disableSaveButton && isMoved)" color="primary"
-                            (click)="doSomething()" size="default"> {{buttonName}}
-                        </ion-button>
-                    </div>
-                </ion-item>
             </ion-list>
+            <ion-item [lines]="'none'" style="height: 50px;">
+                <div class="d-flex flex-wrap align-items-end w-100 justify-content-end">
+                    <ion-button (click)="backURL()" [color]="'secondary'" size="default">{{ "PREVIOUS" | translate}}</ion-button>
+                    <ion-button type="submit" size="default"  color="primary" [disabled]="disableNextButton || (disableSaveButton && isMoved) || isLoading" (click)="doSomething()">
+                        {{buttonName | translate}}
+                        <ion-spinner *ngIf="isLoading"></ion-spinner>
+                      </ion-button>
+                </div>
+            </ion-item>
         </ion-card-content>
     </ion-card>
 </ion-content>

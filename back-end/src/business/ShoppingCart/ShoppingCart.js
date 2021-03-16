@@ -4,7 +4,7 @@ module.exports =  class ShoppingCart {
     constructor (ShoppingCart)
     {}
 
-    createShoppingCart(shoppingCartInfo)
+    createShoppingCart(shoppingCartInfo = {})
     {
         const promiseResult = ShoppingCartModel.createShoppingCart(shoppingCartInfo);
         return promiseResult;
@@ -44,7 +44,7 @@ module.exports =  class ShoppingCart {
     }
 
     removeAllCartItem(shoppingCartId) {
-        const promiseResult = ShoppingCartModel.removeCartItem({_id: shoppingCartId});
+        const promiseResult = ShoppingCartModel.removeAllCartItem({_id: shoppingCartId});
         return promiseResult;
     }
 }

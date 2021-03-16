@@ -1,0 +1,17 @@
+<section class="container" style="/* height: calc(100% - 65px); */ overflow-y: auto;">
+    <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
+    <ng-template [ngIf]="result && result.length !== 0" [ngIfElse]="noDataFound">
+            <div *ngFor="let item of result">
+                <app-card [data]="item" [type]="item.type"></app-card>
+            </div>
+        </ng-template>
+    </ng-template>
+</section>
+
+<ng-template #noDataFound>
+    <app-no-data-found class="h-100 w-100"></app-no-data-found>
+</ng-template>
+
+<ng-template #loading>
+    <app-loading [type]='"card"'></app-loading>
+</ng-template>

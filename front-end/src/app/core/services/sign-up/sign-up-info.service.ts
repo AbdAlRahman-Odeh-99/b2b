@@ -1,5 +1,5 @@
 import { Injectable, ɵConsole } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, ValidatorFn } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,8 @@ export class SignUpInfoService {
   private carInfo: FormGroup;
   private garageInfo: FormGroup;
   private type: string;
-  private enableSaveButton: boolean = false;
-  private enableNextButton: boolean = false;
+  private enableSaveButton = false;
+  private enableNextButton = false;
 
   constructor() {
   }
@@ -83,34 +83,41 @@ export class SignUpInfoService {
         Validators.compose([
           Validators.minLength(8),
           Validators.maxLength(64),
-          Validators.pattern(/(^[A-Z a-z \s]{3,64}$)/),
-          Validators.required
+          Validators.required,
+          this.customPatternValid({ pattern: /(^[\p{L}\d_]{8,64}$)/ugi, msg: 'invalid username' })
         ])),
       fullName: new FormControl('',
         Validators.compose([
           Validators.minLength(8),
           Validators.maxLength(64),
-          Validators.pattern(/(^[A-Z a-z \d_]{8,64}$)/),
-          Validators.required
+          Validators.required,
+          this.customPatternValid({ pattern: /(^[\p{L}\s]{3,64}$)/ugi, msg: 'invalid name' })
         ])),
       email: new FormControl('',
         Validators.compose([
-          Validators.pattern('^[a-z0-9_\.-]*@[\da-z]*\.[a-z]{2,6}$'),
-          Validators.required
+          Validators.email,
+          Validators.required,
+          this.customPatternValid({ pattern: /(^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$)/, msg: 'invalid email' })
+        ])),
+      address: new FormControl('',
+        Validators.compose([
+          Validators.minLength(5),
+          Validators.maxLength(8),
+          Validators.required,
+          this.customPatternValid({ pattern: /(^[A-Z a-z ' -]{5,8}$)/, msg: 'invalid address' })
         ])),
       phoneNumber: new FormControl('',
         Validators.compose([
-          Validators.minLength(10),
-          Validators.maxLength(10),
-          Validators.pattern(/(^[0][7][789]\d{7}$)/),
-          Validators.required
+          Validators.required,
+          this.customPatternValid({ pattern: /(^\d{10}$)/, msg: 'must be 10 numbers' }),
+          this.customPatternValid({ pattern: /(^[0][7][789])/, msg: 'must start with (077 or 078 or 079)' })
         ])),
       password: new FormControl('',
         Validators.compose([
           Validators.minLength(8),
           Validators.maxLength(64),
-          Validators.pattern(/(.{8,64})/),
-          Validators.required
+          Validators.required,
+          this.customPatternValid({ pattern: /(^.{8,64}$)/, msg: 'invalid password' })
         ])),
       role: new FormControl(''),
     });
@@ -123,15 +130,15 @@ export class SignUpInfoService {
           Validators.compose([
             Validators.minLength(8),
             Validators.maxLength(64),
-            Validators.pattern(/(^[A-Z a-z \d\s-_']{4,64}$)/),
-            Validators.required
+            Validators.required,
+            this.customPatternValid({ pattern: /(^[\p{L} \d\s_'-]{4,64}$)/ugi, msg: 'invalid name' })
           ])
         ),
       openTime:
         new FormControl('',
           Validators.compose([
             // Validators.pattern('[a-zA-Z_ ]*'),
-            Validators.required
+            Validators.required,
           ])
         ),
       closeTime:
@@ -144,28 +151,41 @@ export class SignUpInfoService {
       address:
         new FormControl('',
           Validators.compose([
-            Validators.pattern(/(^[A-Z a-z ' -]{5,8}$)/),
-            Validators.required
-          ])
-        ),
-      location:
-        new FormControl('asfsdd',
-          Validators.compose([
-            Validators.pattern(/(^[A-Z a-z ' -]{5,8}$)/),
-            // Validators.required
+            Validators.minLength(4),
+            Validators.maxLength(8),
+            Validators.required,
+            this.customPatternValid({ pattern: /(^[\p{L}'-]{4,8}$)/ugi, msg: 'invalid address' })
           ])
         ),
       tags:
         new FormControl('',
           Validators.compose([
-            Validators.pattern(/(^[A-Z a-z\s\d-,']{2,256}$)/),
-            Validators.required
+            Validators.minLength(2),
+            Validators.maxLength(256),
+            Validators.required,
+            this.customPatternValid({ pattern: /(^[\p{L}\s\d',-]{2,256}$)/ugi, msg: 'invalid tags' })
           ])
         ),
       description:
         new FormControl('',
           Validators.compose([
-            Validators.pattern(/(^[A-Z a-z \d\s-_.']{8,512}$)/),
+            Validators.minLength(8),
+            Validators.maxLength(512),
+            Validators.required,
+            this.customPatternValid({ pattern: /(^[\p{L}\d\s_\.'-]{8,512}$)/ugi, msg: 'invalid description' })
+          ])
+        ),
+      lat:
+        new FormControl('',
+          Validators.compose([
+            Validators.pattern(/(^(\d+).?(\d+)$)/),
+            Validators.required
+          ])
+        ),
+      long:
+        new FormControl('',
+          Validators.compose([
+            Validators.pattern(/(^(\d+).?(\d+)$)/),
             Validators.required
           ])
         ),
@@ -179,18 +199,18 @@ export class SignUpInfoService {
       {
         model: new FormControl('',
           Validators.compose([
-            Validators.minLength(8),
-            Validators.maxLength(100),
-            Validators.pattern(/(^[A-Z a-z \d ']{2,24}$)/),
-            Validators.required
+            Validators.minLength(2),
+            Validators.maxLength(24),
+            Validators.required,
+            this.customPatternValid({ pattern: /(^[\p{L} \d'-]{2,24}$)/ugi, msg: 'invalid model' })
           ])
         ),
         make: new FormControl('',
           Validators.compose([
-            Validators.minLength(8),
-            Validators.maxLength(100),
-            Validators.pattern(/(^[A-Z a-z \s\d-']{3,24}$)/),
-            Validators.required
+            Validators.minLength(3),
+            Validators.maxLength(24),
+            Validators.required,
+            this.customPatternValid({ pattern: /(^[\p{L} \s\d'-]{3,24}$)/ugi, msg: 'invalid make' })
           ])
         ),
         year: new FormControl('',
@@ -232,7 +252,7 @@ export class SignUpInfoService {
     if (this.type === 'car') {
       this.carInfo.valueChanges.subscribe(() => {
         if (this.carInfo.valid) {
-          this.enableEnableSaveButton()
+          this.enableEnableSaveButton();
         } else {
           this.disableEnableSaveButton();
         }
@@ -241,7 +261,7 @@ export class SignUpInfoService {
     else if (this.type === 'car') {
       this.carInfo.valueChanges.subscribe(() => {
         if (this.garageInfo.valid) {
-          this.enableEnableSaveButton()
+          this.enableEnableSaveButton();
         } else {
           this.disableEnableSaveButton();
         }
@@ -257,5 +277,17 @@ export class SignUpInfoService {
         this.disableEnableNextButton();
       }
     });
+  }
+  public customPatternValid(config: any): ValidatorFn {
+    return (control: FormControl) => {
+      let urlRegEx: RegExp = config.pattern;
+      if (control.value && !control.value.match(urlRegEx)) {
+        return {
+          invalidMsg: config.msg
+        };
+      } else {
+        return null;
+      }
+    };
   }
 }

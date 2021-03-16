@@ -1,65 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  GoogleMaps,
-  GoogleMap,
-  GoogleMapsEvent,
-  GoogleMapOptions,
-  CameraPosition,
-  MarkerOptions,
-  Marker,
-  Environment
-} from '@ionic-native/google-maps';
+import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SearchByImageService } from './service/search-by-image.service';
+import { SearchService } from '@app/business/search-result/service/search.service';
+import { Subscription } from 'rxjs';
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'search-by-image',
   templateUrl: './search-by-image.component.html',
   styleUrls: ['./search-by-image.component.css']
 })
-export class SearchByImageComponent implements OnInit {
-
-  map: GoogleMap;
-  constructor() { }
-
-  ionViewDidLoad() {
-    this.loadMap();
-  }
-
-  loadMap() {
-
-    // This code is necessary for browser
-    Environment.setEnv({
-      API_KEY_FOR_BROWSER_RELEASE: 'https://maps.googleapis.com/maps/api/js?key=9856d2b5d8fd26f9`)',
-      API_KEY_FOR_BROWSER_DEBUG: 'http://maps.googleapis.com/maps/api/js?key=9856d2b5d8fd26f9`)'
-    });
-
-    const mapOptions: GoogleMapOptions = {
-      camera: {
-         target: {
-           lat: 43.0741904,
-           lng: -89.3809802
-         },
-         zoom: 18,
-         tilt: 30
-       }
-    };
-
-    this.map = GoogleMaps.create('map_canvas', mapOptions);
-
-    const marker: Marker = this.map.addMarkerSync({
-      title: 'Ionic',
-      icon: 'blue',
-      animation: 'DROP',
-      position: {
-        lat: 43.0741904,
-        lng: -89.3809802
-      }
-    });
-    marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-      alert('clicked');
-    });
+export class SearchByImageComponent implements OnInit, OnDestroy {
+  image = 'assets/defaultImage.png';
+  disableSaerch = true;
+  isLoading = false;
+  isShowResult = false;
+  imageNameResult: string;
+  resultOfSearch: any [];
+  listenOnErrorLoading: Subscription;
+  constructor(
+    private searchByImageService: SearchByImageService,
+    private translate: TranslateService,
+    private searchService: SearchService
+  ) {
+    this.resultOfSearch = [];
+    this.listenOnErrorLoading = this.searchService.listenOnErrorLoading().subscribe(res => {
+      this.resultOfSearch = [];
+    })
   }
 
   ngOnInit(): void {
   }
-
+  getImageAsBase64(value) {
+    this.disableSaerch = false;
+    this.image = value;
+  }
+  search() {
+    this.disableSaerch = true;
+    this.isLoading = true;
+    this.searchByImageService.searchByImage(this.image).subscribe(res => {
+      this.isLoading = false;
+      this.isShowResult = true;
+      this.imageNameResult = res.name;
+      this.searchService.search(this.imageNameResult).subscribe(res => {
+        this.resultOfSearch = res.productsSearchResult;
+      })
+    });
+  }
+  ngOnDestroy(): void {
+    this.listenOnErrorLoading.unsubscribe();
+  }
 }

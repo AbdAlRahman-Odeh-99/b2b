@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { StoresService } from '../../../service/stores.service';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../../../model/category';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -9,26 +10,33 @@ import { Category } from '../../../model/category';
   styleUrls: ['./products.component.css'],
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
 
 
   products: any[];
   storeId: string;
   categories: Category;
-
+  isFetching = false;
+  listenOnErrorLoading: Subscription;
   constructor(
     private storesService: StoresService,
     private activatedRoute: ActivatedRoute,
   ) {
+    this.products = [];
     this.activatedRoute.params.subscribe(params => {
       this.storeId = params.id;
-      this.storesService.getCategoriesByStoreId('store', this.storeId).subscribe(res => {
+      this.storesService.getCategoriesByStoreId('stores', this.storeId).subscribe(res => {
         this.categories = res.categories;
       });
-      this.storesService.getProductsByStoreId('store', this.storeId).subscribe(res => {
-        this.products = res;
+      this.isFetching = true;
+      this.storesService.getProductsByStoreId('stores', this.storeId).subscribe(res => {
+        this.isFetching = false;
+        this.products = res.products;
       });
     });
+    this.listenOnErrorLoading = this.storesService.listenOnErrorLoading().subscribe(res => {
+      this.products = [];
+    })
   }
   customPopoverOptions: any = {
     header: 'Select Category',
@@ -40,13 +48,16 @@ export class ProductsComponent implements OnInit {
   updateCategory(value) {
     let { value: categoryId } = value.target;
     if (categoryId === 'all') {
-      categoryId= null;
+      categoryId = null;
     }
-    this.storesService.getProductsByCategoryIdAndStoreId('store', this.storeId, categoryId).subscribe(res => {
-      this.products = res;
-      console.log(res)
+    this.isFetching = true;
+    this.storesService.getProductsByCategoryIdAndStoreId('stores', this.storeId, categoryId).subscribe(res => {
+      this.isFetching = false;
+      this.products = res.products;
     });
   }
 
-
+  ngOnDestroy(): void {
+    this.listenOnErrorLoading.unsubscribe();
+  }
 }

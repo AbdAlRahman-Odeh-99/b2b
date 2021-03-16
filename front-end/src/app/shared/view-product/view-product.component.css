@@ -1,0 +1,22 @@
+.inStock {
+  background-color: green;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.out-stock {
+  background-color: red;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.img-product {
+  display: block;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  max-height: 335px;
+}

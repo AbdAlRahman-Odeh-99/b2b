@@ -1,1 +1,21 @@
-<ion-router-outlet></ion-router-outlet> 
+<section class="container h-100">
+  <div class="d-flex justify-content-start h-100 w-100">
+    <div
+      *ngIf="(isMobile && isMoblieAndOpenContact) || !isMobile"
+      class="h-100 manage-contact {{ !contactSelected ? 'full-width' : '' }}"
+    >
+      <app-contacts (selectedContacts)="selectedContact($event)"></app-contacts>
+    </div>
+    <div
+      *ngIf="
+        !isHids && ((isMobile && isMoblieAndOpenConversation) || !isMobile)
+      "
+      class="h-100 manage-conversation"
+    >
+      <app-conversation
+        (backToContacts)="backToContacts()"
+        [conversationInfo]="contactSelected"
+      ></app-conversation>
+    </div>
+  </div>
+</section>

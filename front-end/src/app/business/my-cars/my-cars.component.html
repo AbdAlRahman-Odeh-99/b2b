@@ -1,0 +1,95 @@
+<section style="height: 100%" class="container">
+  <ion-card style="height: calc(100% - 20px); overflow-y: auto; display: block">
+    <ion-card-header>
+      <ion-card [formGroup]="addNewCarFormGroup">
+        <ion-item lines="none">
+          <ion-title class="ion-title"> {{ "ADD_NEW_CAR" | translate }} </ion-title>
+        </ion-item>
+        <div class="container">
+          <div class="d-flex justify-content-between flex-wrap ">
+            <div>
+              <ion-item lines="full">
+                <ion-label position="floating">{{ "MODEL" | translate }}</ion-label>
+                <ion-input type="text" formControlName="model"></ion-input>
+              </ion-item>
+              <app-input-error-message [form]="addNewCarFormGroup" formInput='model'></app-input-error-message>
+            </div>
+            <div>
+              <ion-item lines="full">
+                <ion-label position="floating">{{ "MAKE" | translate }}</ion-label>
+                <ion-input type="text" formControlName="make"></ion-input>
+              </ion-item>
+              <app-input-error-message [form]="addNewCarFormGroup" formInput='make'></app-input-error-message>
+            </div>
+            <ion-item lines="full">
+              <ion-label position="floating">{{ "YEAR" | translate }}</ion-label>
+              <ion-datetime display-format="YYYY" picker-format="YYYY" formControlName="year">
+              </ion-datetime>
+            </ion-item>
+            <div class="row-btns d-flex justify-content-end">
+              <ion-button color="secondary" (click)="addCar()" [disabled]="disableAddNewCarBtn">
+                <ion-icon name="save-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </ion-card>
+      <ion-card-header class="d-flex justify-content-between">
+        <ion-card-title class="pt-2">{{ "MY_CARS" | translate }}</ion-card-title>
+      </ion-card-header>
+    </ion-card-header>
+    <ion-card-content *ngIf="myCars" [formGroup]="myCars">
+      <ion-card formArrayName="cars">
+        <div *ngFor="let car of myCars.get('cars')['controls']; index as i">
+          <div class="col pt-2" [formGroupName]="i">
+            <div class="d-flex justify-content-between flex-wrap " *ngIf="car.get('isEditing').value">
+              <div>
+                <ion-item>
+                  <ion-label position="floating">{{ "MODEL" | translate }}</ion-label>
+                  <ion-input type="text" formControlName="model"></ion-input>
+                </ion-item>
+                <app-input-error-message [form]="car" formInput='model'></app-input-error-message>
+              </div>
+              <div>
+                <ion-item>
+                  <ion-label position="floating">{{ "MAKE" | translate }}</ion-label>
+                  <ion-input type="text" formControlName="make"></ion-input>
+                </ion-item>
+                <app-input-error-message [form]="car" formInput='make'></app-input-error-message>
+              </div>
+              <ion-item>
+                <ion-label position="floating">{{ "YEAR" | translate }}</ion-label>
+                <ion-datetime display-format="YYYY" picker-format="YYYY" formControlName="year">
+                </ion-datetime>
+              </ion-item>
+              <div class="row-btns d-flex justify-content-end">
+                <ion-button [disabled]="!car.get('isEditing').value" color="secondary" (click)="saveEditedCar(i)">
+                  <ion-icon name="save-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between flex-wrap border-bottom" *ngIf="!car.get('isEditing').value">
+              <div class="col pt-2">
+                <span class="light-text-darktheme"> {{ "MODEL" | translate }}: {{ car.get("model").value }} </span>
+              </div>
+              <div class="col pt-2">
+                <span class="light-text-darktheme"> {{ "MAKE" | translate }}: {{ car.get("make").value }} </span>
+              </div>
+              <div class="col pt-2">
+                <span class="light-text-darktheme"> {{ "YEAR" | translate }}: {{ car.get("year").value }} </span>
+              </div>
+              <div class="col mb-2 row-btns d-flex justify-content-end">
+                <ion-button [disabled]="car.get('isEditing').value" color="tertiary" (click)="editCar(i)">
+                  <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button color="danger" (click)="deleteCar(i)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-card>
+    </ion-card-content>
+  </ion-card>
+</section>

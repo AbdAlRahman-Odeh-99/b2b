@@ -1,0 +1,50 @@
+##
+# Please refer to Circle CI Documentation for
+# advanced tweaks and configuration
+##
+
+version: 2
+################################ Workflows ################################
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build-deploy-PRODUCTION:
+          filters:
+            branches:
+              only: staging
+
+################################ JOBS ################################
+jobs:
+  #(PRODUCTION) Build and Deploy Configuration
+  build-deploy-PRODUCTION:
+    working_directory: ~/b2b
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run: sudo apt install rsync
+      # (Production) Build Angular project
+      - restore_cache:
+          key: dependency-cache-production-{{ checksum "package-lock.json" }}
+      - run:
+          name: install-dependencies (PRODUCTION)
+          command: npm install
+
+      - save_cache:
+          key: dependency-cache-production-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.cache/npm
+            - ./node_modules
+      - run:
+          name: angular-build (PRODUCTION)
+          command: npm run build --prod
+      - add_ssh_keys:
+          fingerprints:
+            - "71:ab:7b:a0:f3:ab:91:be:bb:48:7b:32:c1:86:d7:1d"
+      # - run:
+      #     name: Fix host authenticity for dev.makt-b2b.live (PRODUCTION)
+      #     command: ssh-keyscan 174.138.124.76 >> ~/.ssh/known_hosts
+      - run:
+          name: Copy files to server (PRODUCTION)
+          command: rsync -azvh --progress --delete-after ~/b2b/dist root@174.138.124.76:/var/www/b2b

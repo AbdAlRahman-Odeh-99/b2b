@@ -15,12 +15,20 @@ addDays = function(days)
 
 module.exports = 
 {
+    exists(value)
+    {
+        const result = OfferModel.exists({_id: value.offerId},{id:1});
+        if (result)
+            return result;
+        else
+            return {error: "Error with the getting offer"};
+    },
+
     createOffer(value)
     {
         //expirationDate = moment().add(value.duration,'days').format('DD/MM/YYYY');
         //expirationDate = moment().add(value.duration,'days');
         expirationDate = addDays(value.duration);
-        console.log(expirationDate);
         const result = OfferModel.create({discountRate:value.discountRate,duration:value.duration,newPrice:value.newPrice,expirationDate:expirationDate});
         if(result)
         return result;

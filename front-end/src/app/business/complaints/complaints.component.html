@@ -1,0 +1,46 @@
+<section class="container main-container-in-page h-100" infiniteScroll [infiniteScrollDistance]="0.5"
+[infiniteScrollThrottle]="5"  [scrollWindow]="false" (scrolled)="getComplaints()" [infiniteScrollUpDistance]="1.5">
+    
+    <ng-template
+    
+    [ngIf]="!isLoading"
+    [ngIfElse]="loading"
+    >
+    <ng-template
+    [ngIf]="complaints && complaints.length !== 0"
+    [ngIfElse]="noDataFound"
+    >
+    <h2>{{ "VIEW_COMPLAINTS" | translate }}</h2>
+    <div class="d-flex flex-column">
+      <div
+        *ngFor="let complaint of complaints"
+        style="border-bottom: 1px solid #f1f1f1"
+        class="my-2"
+      >
+        <div class="d-flex flex-column justify-content-lg-start">
+          <div>
+            <span class="light-text-darktheme"> {{ "GARAGE_OWNER_NAME" | translate }}: {{ complaint.garageOwnerName }} </span>
+          </div>
+          <div>
+            <span class="light-text-darktheme"> {{ "GARAGE_NAME" | translate }}: {{ complaint.storeName }} </span>
+          </div>
+        </div>
+        <div>
+          <span class="light-text-darktheme"> {{ "MESSAGE" | translate }}: </span>
+          <p class="light-text-darktheme" style="max-height: 250px; overflow-y: auto">
+            {{ complaint.message }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  </ng-template>
+</section>
+
+<ng-template #loading>
+  <app-loading [type]="'card-without-image'"></app-loading>
+</ng-template>
+
+<ng-template #noDataFound >
+  <app-no-data-found></app-no-data-found>
+</ng-template>

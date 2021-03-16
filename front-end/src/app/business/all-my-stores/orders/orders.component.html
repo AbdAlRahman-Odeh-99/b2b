@@ -1,0 +1,77 @@
+<section class="container h-100">
+  <div class="m-3 d-flex justify-content-around flex-wrap border-bottom divColorFix settingsDiv">
+    <div>
+      <ion-label> {{ "SELECT_STORE" | translate }} </ion-label>
+      <ion-select
+        interface="alert"
+        (ionChange)="selectStore($event)"
+        [interfaceOptions]="customPopoverOptions"
+        placeholder="Select One"
+        [value]="storeId"
+      >
+        <ion-select-option
+          *ngFor="let storesId of storesId"
+          [value]="storesId._id"
+          >{{ storesId.name }}</ion-select-option
+        >
+      </ion-select>
+    </div>
+    <div>
+      <ion-label> {{ "SELECT_STATUS_ORDERS" | translate }} </ion-label>
+      <ion-select
+        interface="alert"
+        (ionChange)="selectStatusOrder($event)"
+        [interfaceOptions]="customPopoverOptions"
+        placeholder="Select One"
+        [value]="statusOrder"
+      >
+        <ion-select-option
+          *ngFor="let status of statuses"
+          [value]="status.key"
+          >{{ status.label | translate }}</ion-select-option
+        >
+      </ion-select>
+    </div>
+  </div>
+  <div>
+    <table class="table table-striped divColorFix settingsDiv">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">{{ "USER_INFORMATION" | translate }}</th>
+          <th scope="col">{{ "PHONE_NUMBER" | translate }}</th>
+          <th scope="col">{{ "ADDRESS" | translate }}</th>
+          <th scope="col">{{ "PRODUCT_INFO" | translate }}</th>
+          <th *ngIf="statusOrder === 'pending' || statusOrder === 'all'" scope="col">{{ "ACTION" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders; index as index">
+          <th scope="row">{{ index + 1 }}</th>
+          <td>
+            <div>
+              <div class="light-text-darktheme">{{ "USERNAME" | translate }}: {{ order.carOwner.fullName }}</div>
+              <div class="light-text-darktheme">{{ "EMAIL" | translate }}: {{ order.carOwner.fullName }}</div>
+            </div>
+          </td>
+          <td>{{ order.phoneNumber }}</td>
+          <td>{{ order.deliveryAddress }}</td>
+          <td>
+            <div class="light-text-darktheme">{{ "NAME" | translate }}: {{ order.product.name }}</div>
+            <div class="light-text-darktheme">{{ "PRICE" | translate }}: {{ order.product.price }}</div>
+          </td>
+          <td *ngIf="statusOrder === 'pending' || order.status === 'pending'">
+            <div class="d-flex justify-content-start">
+              <ion-button color="success" (click)="updateOrderStatus(order.storeId, order._id, 'delivered')">
+                <ion-icon name="bag-check-outline"></ion-icon>
+              </ion-button>
+              <ion-button color="danger" (click)="updateOrderStatus(order.storeId, order._id, 'cancel')">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

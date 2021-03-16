@@ -18,7 +18,10 @@ module.exports = {
     updateOrder(value) {
         const result = OrderModel.findOneAndUpdate({
             _id: value._id
-        }, value, { "useFindAndModify": false });
+        }, value, {
+            "useFindAndModify": false,
+            new: true
+        });
 
         if (result) {
             return result;
@@ -55,11 +58,17 @@ module.exports = {
             };
     },
 
-    // getCarOwnerByOrderId(value) {
-    //     const result = OrderModel.findOne({
-            
-    //     });
-    // },
+    getCarOwnerByOrderId(value) {
+        const result = OrderModel.findOne({
+            carOwnerId: value.carOwnerId
+        });
+        if (result)
+            return result;
+        else
+            return {
+                error: "Error in getCarOwnerByOrderId"
+            };
+    },
 
     deleteAllOrder() {
         const result = OrderModel.deleteMany({});
@@ -69,6 +78,49 @@ module.exports = {
         else
             return {
                 error: "Error with the delete all Orders"
+            };
+    },
+
+    getOrdersByStoreId(value) {
+        const result = OrderModel.find({
+            storeId: value.storeId,
+        }).limit(value.limit).skip(value.skip);
+
+        if (result)
+            return result;
+        else
+            return {
+                error: "Error in getOrdersByStoreId function"
+            };
+    },
+
+    getOrdersByStoreIdAndStatus(value) {
+        const result = OrderModel.find({
+            $and: [{
+                storeId: value.storeId,
+            }, {
+                status: value.status
+            }]
+        }).limit(value.limit).skip(value.skip).populate('shoppingCart');
+
+        if (result)
+            return result;
+        else
+            return {
+                error: "Error in getOrdersByStoreIdAndStatus function"
+            };
+    },
+
+    getOrderByCarOwnerId(value) {
+        const result = OrderModel.find({
+            carOwnerId: value.carOwnerId
+        }).limit(value.limit).skip(value.skip);
+
+        if (result)
+            return result;
+        else
+            return {
+                error: "Error in getOrderByCarOwnerId"
             };
     }
 };

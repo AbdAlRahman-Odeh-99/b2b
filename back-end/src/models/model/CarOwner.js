@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const CarOwnerSchema = require("../schema/CarOwner");
-const CarOwnerModel = mongoose.model('CarOwner', CarOwnerSchema);
+const CarOwnerModel= mongoose.model('CarOwner', CarOwnerSchema);
 
 module.exports = {
     createCarOwner(value) {
@@ -30,7 +30,7 @@ module.exports = {
             };
         }
     },
-
+    //For testing
     deleteCarOwner(value) {
         const result = CarOwnerModel.findOneAndDelete({
             _id: value._id
@@ -78,6 +78,38 @@ module.exports = {
             return {
                 error: "Error with the delete all CarOwners"
             };
+    }
+    ,
+    findAllCarOwners(value) {
+        const result = CarOwnerModel.find({}).skip(value.skip).limit(value.limit).populate('user').populate('cars').exec();
+        if (result)
+            return result;
+        else
+            return {error: "Error with the getting all CarOwners"};
+    }
+    ,
+    addCarToList(value)
+    {
+        const result = CarOwnerModel.findByIdAndUpdate(
+            { _id: value._id },
+            { $push: { cars: value.carInfo } },
+            { "useFindAndModify": false }
+        );
+        if (result)
+            return result;
+        else
+            return { error: "Error with the adding car to cars list" };
+    },
+    removeCarFromList(value)
+    {
+        const result = CarOwnerModel.findByIdAndUpdate({ _id: value._id },
+            { $pull: { cars: value.carId } },
+            { multi: true },
+        );
+        if (result)
+            return result;
+        else
+            return { error: "Error with the removing car from cars list" };
     },
 
     async addOrder(value) {
@@ -95,13 +127,13 @@ module.exports = {
             // }
 
         });
-        
+
         if (result)
-        return result;
-    else
-        return {
-            error: "Error in addOrder"
-        };
+            return result;
+        else
+            return {
+                error: "Error in addOrder"
+            };
     },
 
     async clearShoppingcart(value) {
@@ -116,13 +148,13 @@ module.exports = {
             }
 
         });
-        
+
         if (result)
-        return result;
-    else
-        return {
-            error: "Error in clearShoppingcart"
-        };
+            return result;
+        else
+            return {
+                error: "Error in clearShoppingcart"
+            };
     },
 
     async removeOrder(value) {
@@ -135,28 +167,59 @@ module.exports = {
             // .populate('stores')
             .then(cOwner => {
                 let index = cOwner.orders.indexOf(value.orderId);
-                if(index >= 0 ) {
-                // console.log();
-                //     // console.log(cOwner.stores[0].orders.splice(index, 1));
-                cOwner.orders.splice(index, 1);
-                result = cOwner.save();
+                if (index >= 0) {
+                    // console.log();
+                    //     // console.log(cOwner.stores[0].orders.splice(index, 1));
+                    cOwner.orders.splice(index, 1);
+                    result = cOwner.save();
                 }
                 //     result = Promise.resolve(cOwner);
             });
 
-            if (result)
+        if (result)
             return result;
         else
             return {
                 error: "Error in removeOrder"
             };
-    }
-    ,
-    findAllCarOwners() {
-        const result = CarOwnerModel.find({}).populate('user').populate('cars').exec();
+    },
+
+    async getOrder(value) {
+        let result = null;
+        await CarOwnerModel.findOne({
+            _id: value._id
+        }, {
+            orders: {
+                $elemMatch: {
+                    $eq: value.orderId
+                }
+            }
+        })
+        .then(cOwner => {
+            result = Promise.resolve(cOwner.orders[0]);
+        });
+
         if (result)
             return result;
         else
-            return {error: "Error with the getting all CarOwners"};
-    }
+            return {
+                error: "Error in getOrder"
+            };
+    },
+
+    // getOrders(value) {        
+    //     result = CarOwnerModel.findOne({
+    //         user: value.user
+    //     }, {
+    //         orders: 1
+    //     }).populate('orders');        
+
+    //     if (result)
+    //         return result;
+    //     else
+    //         return {
+    //             error: "Error in getOrders"
+    //         };
+    // }
+
 };

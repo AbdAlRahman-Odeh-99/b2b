@@ -1,85 +1,205 @@
-import { Component, OnInit } from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import { fromEvent, Observable, Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { AppRoutingConstants, BasedUrlsConstants, BusinessRoutingConstants, SharedRoutingConstants } from '@app/core/constants/routes';
+import { SharedConstants } from '@app/core/constants/constants';
+import { AuthService } from '@app/core/services/auth/auth.service';
 
-
-import { ActivatedRoute } from '@angular/router';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-component',
   templateUrl: './business.component.html',
-  styleUrls: ['./business.component.css']
+  styleUrls: ['./business.component.scss'],
 })
-export class BusinessComponent implements OnInit {
+export class BusinessComponent implements OnInit, OnDestroy {
   public selectedIndex = 0;
   public folder: string;
+  isSearchOpen: boolean = false;
+  isChangeRoute: boolean = false;
+  resizeObservable$: Observable<Event>;
+  resizeSubscription$: Subscription;
+  isMobile: boolean = false;
+  listenOnRouting: Subscription;
+  username: string;
 
-  public appPages = [
+  public isLoading: boolean = true;
+
+  garageOwnerPages = [
     {
-      title: 'My Store',
-      url: '/business/my-stores',
-      icon: 'accessibility'
+      title: 'MY_STORES',
+      url: `/${BusinessRoutingConstants.BUSINESS}/${BusinessRoutingConstants.MY_STORES}`,
+      icon: 'storefront',
     },
     {
-      title: 'Search By Image',
-      url: '/business/search-by-image',
-      icon: 'search'
+      title: 'ADD_STORE',
+      url: `/${BusinessRoutingConstants.BUSINESS}/${BusinessRoutingConstants.MY_STORES}/${BusinessRoutingConstants.ADD_STORE}`,
+      icon: 'add-circle',
     },
     {
-      title: 'CHAT',
-      url: '/business/chat',
-      icon: 'mail'
+      title: 'ORDERS',
+      url: `/${BusinessRoutingConstants.BUSINESS}/${BusinessRoutingConstants.MY_STORES}/${BusinessRoutingConstants.ORDERS}`,
+      icon: 'documents',
     },
     {
-      title: 'HOME',
-      url: '/business/home',
-      icon: 'home'
+      title: 'COMPLAINTS',
+      url: `/${BusinessRoutingConstants.BUSINESS}/${BusinessRoutingConstants.COMPLAINTS}`,
+      icon: 'document-text',
     },
+  ];
+  CarOwnerPages = [
+    {
+      title: 'MY_CARS',
+      url: '/business/my-cars',
+      icon: 'car-sport',
+    },
+    {
+      title: 'SOS',
+      url: `/${BusinessRoutingConstants.BUSINESS}/${BusinessRoutingConstants.SOS}`,
+      icon: 'warning',
+    },
+  ];
+  guestPages = [
     {
       title: 'STORES',
       url: '/business/store',
-      icon: 'storefront'
+      icon: 'storefront',
     },
     {
       title: 'PRODUCTS',
       url: '/business/products',
-      icon: 'cube'
+      icon: 'cube',
     },
-    {
-      title: 'CATEGORIES',
-      url: '/business/categories',
-      icon: 'grid'
-    },
-    {
-      title: 'OFFERS',
-      url: '/business/offers',
-      icon: 'gift'
-    },
+    // {
+    //   title: 'OFFERS',
+    //   url: '/business/offers',
+    //   icon: 'gift',
+    // },
     {
       title: 'SHOPPING_CART',
       url: '/business/shopping-card',
-      icon: 'bag-handle'
-    },
-    {
-      title: 'SETTING',
-      url: '/business/settings',
-      icon: 'settings'
+      icon: 'bag-handle',
     },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
+  public appPages: any[];
+  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  role: string;
+  isLoggedIn = false;
+  searchResult: any[];
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private translate: TranslateService
+    private router: Router,
+    private authService: AuthService // private menu: MenuController
   ) {
+    this.router.events.subscribe(() => {
+      const url = this.router.url;
+      if (this.isSearchOpen && !url.includes('search')) {
+        this.isSearchOpen = false;
+      }
+    });
+   }
+
+  logout() {
+    this.authService.logout();
   }
-  
-  ngOnInit() {
-    const path = window.location.pathname.split('folder/')[1];
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    if (path !== undefined) {
-      this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
+
+
+
+
+  isSearchOpened(value: boolean) {
+    this.isSearchOpen = value;
+    if (!value) {
+      this.router.navigateByUrl(`/${AppRoutingConstants.BUSINESS}`);
     }
   }
+  
+  search(key) {
+    this.router.navigateByUrl(`/${AppRoutingConstants.BUSINESS}/${BusinessRoutingConstants.SEARCH}?search=${key}`);
+  }
 
+  listenOnChangeSizeWindow() {
+    this.resizeObservable$ = fromEvent(window, 'resize');
+    this.resizeSubscription$ = this.resizeObservable$.subscribe(evt => {
+      if (window.innerWidth <= 720 && !this.isMobile) {
+        this.isMobile = true;
+      } else if (window.innerWidth > 720 && this.isMobile) {
+        this.isMobile = false;
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.appPages = [
+      {
+        title: 'SEARCH_BY_IMAGE',
+        url: '/business/search-by-image',
+        icon: 'search',
+      },
+      {
+        title: 'CHAT',
+        url: '/business/chat',
+        icon: 'mail',
+      },
+      {
+        title: 'SETTING',
+        url: '/business/settings',
+        icon: 'settings',
+
+      },
+
+    ];
+    this.role = this.authService.getRole();
+    if (this.authService.loggedIn) {
+      this.isLoggedIn = true;
+    }
+    this.username = this.authService.getUsername();
+    if (
+      this.role === SharedConstants.GUEST ||
+      this.role === SharedConstants.CAR_OWNER
+    ) {
+      this.appPages.unshift(...this.guestPages);
+      if (this.role === SharedConstants.CAR_OWNER) {
+        this.appPages.unshift(...this.CarOwnerPages);
+      }
+    } else if (this.role === SharedConstants.GARAGE_OWNER) {
+      this.appPages.unshift(...this.garageOwnerPages);
+    } else if (this.role === SharedConstants.ADMIN) {
+      this.appPages = [
+        {
+          title: 'MANAGE_ACCOUNTS',
+          url: '/business/admin/manage-account',
+          icon: 'people',
+        },
+        {
+          title: 'COMPLAINTS',
+          url: '/business/admin/complaints',
+          icon: 'document-text',
+        },
+        {
+          title: 'SETTING',
+          url: '/business/settings',
+          icon: 'settings',
+        },
+      ];
+    }
+    if (window.innerWidth <= 720 && !this.isMobile) {
+      this.isMobile = true;
+    } else if (window.innerWidth > 720 && this.isMobile) {
+      this.isMobile = false;
+    }
+    this.listenOnChangeSizeWindow();
+  }
+
+  ngOnDestroy(): void {
+    if (this.listenOnRouting) {
+      this.listenOnRouting.unsubscribe();
+    }
+    this.resizeSubscription$.unsubscribe();
+    this.appPages = [];
+  }
 }
+
+
+
+
+

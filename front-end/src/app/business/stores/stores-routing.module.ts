@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { StoresRoutingConstants } from '@app/core/constants/routes';
 import { StoresComponent } from './stores.component';
 // import { StoreInfoPage } from './store-info/store-info.page';
 
@@ -12,7 +13,7 @@ const routes: Routes = [
     // ],
   },
   {
-    path: 'info',
+    path: StoresRoutingConstants.INFO,
     loadChildren: () => import('./info/info.module').then((m) => m.InfoModule),
   }
 

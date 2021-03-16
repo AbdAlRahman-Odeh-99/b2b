@@ -1,0 +1,54 @@
+<section style="overflow-y: auto; height: 100%;" class="container">
+    <ion-card [formGroup]="offersFromGroup">
+        <ion-card-header>
+            <ion-card-header class="d-flex justify-content-between flex-wrap">
+                <ion-card-title class="pt-2">{{ "CREATE_OFFERS" | translate }}</ion-card-title>
+                <div>
+                    <ion-button color="secondary" (click)="addOffer()">{{ "ADD" | translate }}
+                    </ion-button>
+                    <ion-button color="success" [disabled]="offersFromGroup.invalid || !offersFromGroup.dirty" (click)="createOffer()">{{ "CREATE" | translate }}
+                    </ion-button>
+                </div>
+            </ion-card-header>
+        </ion-card-header>
+        <ion-card-content formArrayName="offers" *ngIf="offersFromGroup" >
+            <div *ngFor="let offer of offersFromGroup.get('offers')['controls']; index as i">
+                <ion-card [formGroupName]="i">
+                    <div class="d-flex justify-content-between flex-wrap">
+                        <ion-item lines="full" class="margined">
+                            <ion-label position="floating">{{ "PRODUCT_NAME" | translate }}: </ion-label>
+                            <ion-select interface="alert" [interfaceOptions]="customPopoverOptions"
+                                formControlName="productId" placeholder="Select One" value="all">
+                                <ion-select-option value="all">{{ "ALL" | translate }}</ion-select-option>
+                                <ion-select-option *ngFor="let product of products" [value]="product.value">
+                                    {{product.name}}
+                                </ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                        <ion-item lines="full" class="margined">
+                            <ion-label position="floating">{{ "PRICE" | translate }}</ion-label>
+                            <ion-input type="number" formControlName="price" required></ion-input>
+                        </ion-item>
+                        <app-input-error-message [form]="offersFromGroup" formInput='price'></app-input-error-message>
+                        <ion-item lines="full" class="margined">
+                            <ion-label position="floating">{{ "DISCOUNT_RATE" | translate }}</ion-label>
+                            <ion-input type="number" formControlName="discountRate" required></ion-input>
+                        </ion-item>
+                        <app-input-error-message [form]="offersFromGroup" formInput='discountRate'></app-input-error-message>
+                        <ion-item lines="full" class="margined">
+                            <ion-label position="floating">{{ "DURATION" | translate }}</ion-label>
+                            <ion-input type="number" formControlName="duration" required></ion-input>
+                        </ion-item>
+                        <app-input-error-message [form]="offersFromGroup" formInput='duration'></app-input-error-message>
+                       <div class="m-2">
+                        <ion-button color="danger" (click)="deleteOffer(i)">
+                            <ion-icon name="trash-outline"></ion-icon>
+                        </ion-button>
+                       </div>
+                    </div>
+                </ion-card>
+            </div>
+
+        </ion-card-content>
+    </ion-card>
+</section>

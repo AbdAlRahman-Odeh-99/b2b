@@ -1,0 +1,7 @@
+<section *ngIf="!isHeader">
+  <ion-searchbar placeholder="{{ 'SEARCH' | translate }}" class="full" (ionInput)="filterList($event)"></ion-searchbar>
+</section>
+<section *ngIf="isHeader" style="width: 100%;">
+  <ion-icon class="icon" size="small" name="search" *ngIf="!toggled" (click)="toggle();"></ion-icon>
+  <ion-searchbar placeholder="{{ 'SEARCH' | translate }}" class="header" (ionInput)="filterList($event)" *ngIf="toggled" [showCancelButton]="true" (ionCancel)="toggle()"></ion-searchbar>
+</section>

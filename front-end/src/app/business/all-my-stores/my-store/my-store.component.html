@@ -1,24 +1,20 @@
 <ion-tabs>
     <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="my-categories">
-            <ion-icon name="storefront"></ion-icon>
-            <ion-label>My Categories</ion-label>
-            <!-- <ion-badge>6</ion-badge> -->
-        </ion-tab-button>
-
         <ion-tab-button tab="my-products">
-            <ion-icon name="person-circle"></ion-icon>
-            <ion-label>My products</ion-label>
+            <ion-icon name="cube"></ion-icon>
+            <ion-label>{{ "PRODUCTS" | translate }}</ion-label>
         </ion-tab-button>
-
-        <ion-tab-button tab="create-category">
-            <ion-icon name="map"></ion-icon>
-            <ion-label>Create Category</ion-label>
+        <ion-tab-button tab="manage-category">
+            <ion-icon name="create"></ion-icon>
+            <ion-label>{{ "CATEGORY" | translate }}</ion-label>
         </ion-tab-button>
-
-        <ion-tab-button tab="insert-product">
-            <ion-icon name="information-circle"></ion-icon>
-            <ion-label>Insert Product</ion-label>
+        <ion-tab-button tab="manage-product">
+            <ion-icon name="create"></ion-icon>
+            <ion-label>{{ "PRODUCT" | translate }}</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="manage-offers">
+            <ion-icon name="create"></ion-icon>
+            <ion-label>{{ "OFFERS" | translate }}</ion-label>
         </ion-tab-button>
     </ion-tab-bar>
 </ion-tabs>

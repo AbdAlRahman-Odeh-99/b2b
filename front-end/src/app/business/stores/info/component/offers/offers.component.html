@@ -1,16 +1,21 @@
-<section class="main-container-in-page">
-    <span>
-        <!-- {{ 'TEST' | translate }} -->
-    </span>
-    <ng-template [ngIf]="offers" [ngIfElse]="loading">
-        <div class="d-flex flex-wrap  justify-content-center">
-            <div *ngFor="let offer of offers">
-                <app-card [data]="offer" [type] ="'products'"></app-card>
-            </div>
+<section class="main-container-in-page h-100">
+  <span>
+    <!-- {{ 'TEST' | translate }} -->
+  </span>
+  <ng-template  [ngIf]="!isFetching" [ngIfElse]="loading">
+    <ng-template [ngIf]="offers.length !== 0" [ngIfElse]="noDataFound">
+      <div class="container">
+        <div *ngFor="let offer of offers">
+          <app-card [data]="offer" [type]="'products'"></app-card>
         </div>
+      </div>
     </ng-template>
+  </ng-template>
 </section>
 
 <ng-template #loading>
-    <app-loading [type]='"card"'></app-loading>
+  <app-loading [type]="'card'"></app-loading>
+</ng-template>
+<ng-template #noDataFound>
+  <app-no-data-found></app-no-data-found>
 </ng-template>

@@ -1,27 +1,45 @@
-<section class="main-container-in-page">
-    <span>
-        <!-- {{ 'TEST' | translate }} -->
-    </span>
-    <!-- <ion-backdrop visible="false"></ion-backdrop> -->
+<section class="main-container-in-page h-100">
+  <span>
+    <!-- {{ 'TEST' | translate }} -->
+  </span>
+  <!-- <ion-backdrop visible="false"></ion-backdrop> -->
 
-    <ng-template [ngIf]="products" [ngIfElse]="loading">
-        <div class="w-100 d-flex justify-content-center">
-            <div class="d-flex justify-content-around">
-                <ion-label class="mt-2">Select a category name: </ion-label>
-                <ion-select interface="alert" (ionChange)="updateCategory($event)" [interfaceOptions]="customPopoverOptions" placeholder="Select One" value = "all">
-                  <ion-select-option value="all">All</ion-select-option>
-                  <ion-select-option *ngFor="let category of categories"  [value]="category._id">{{category.name}}</ion-select-option>
-                </ion-select>
-            </div>
+  <div class="w-100 d-flex justify-content-center">
+    <div class="d-flex justify-content-around">
+      <ion-label class="mt-2">{{ "SELECT_A_CATEGORY_NAME" | translate }}: </ion-label>
+      <ion-select
+        interface="alert"
+        (ionChange)="updateCategory($event)"
+        [interfaceOptions]="customPopoverOptions"
+        placeholder="Select One"
+        value="all"
+      >
+        <ion-select-option value="all">{{ "ALL" | translate }}</ion-select-option>
+        <ion-select-option
+          *ngFor="let category of categories"
+          [value]="category._id"
+          >{{ category.name }}</ion-select-option
+        >
+      </ion-select>
+    </div>
+  </div>
+  <div style="height: calc(100% - 50px); overflow-y: auto;">
+    <ng-template [ngIf]="!isFetching" [ngIfElse]="loading">
+      <ng-template [ngIf]="products.length !== 0" [ngIfElse]="noDataFound">
+        <div class="container">
+          <div *ngFor="let product of products">
+            <app-card [data]="product" [type]="'products'"></app-card>
+          </div>
         </div>
-        <div class="d-flex flex-wrap  justify-content-center">
-            <div *ngFor="let product of products">
-                <app-card [data]="product" [type] ="'products'"></app-card>
-            </div>
-        </div>
+      </ng-template>
     </ng-template>
+  </div>
 </section>
 
 <ng-template #loading>
-    <app-loading [type]='"card"'></app-loading>
+  <app-loading [type]="'card'"></app-loading>
+</ng-template>
+
+<ng-template #noDataFound>
+  <app-no-data-found></app-no-data-found>
 </ng-template>

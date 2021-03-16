@@ -1,0 +1,21 @@
+.manage-contact {
+  min-width: 350px !important;
+  max-width: 100%;
+}
+
+.manage-conversation {
+  width: calc(100% - 360px);
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+@media screen and (max-width: 720px) {
+  .manage-conversation {
+    width: 100%;
+  }
+  .manage-contact {
+    width: 100%;
+  }
+}

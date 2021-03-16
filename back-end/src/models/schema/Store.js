@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const GarageOwner = require('./GarageOwner');
+const Menu = require('./Menu');
+const Warehouse = require('./Warehouse');
+const Geolocation = require('./Geolocation');
+
 const schema = mongoose.Schema;
 
 const Store = new schema({
@@ -13,7 +18,7 @@ const Store = new schema({
         type: String,
     },
 
-    storeName: {
+    name: {
         type: String,
         required: true,
         trim: true,
@@ -26,7 +31,7 @@ const Store = new schema({
         required: true,
         trim: true,
         minLength: 4,
-        maxlength: 64
+        maxlength: 9
     },
 
     image: {type: String},
@@ -36,27 +41,35 @@ const Store = new schema({
         required: true,
         trim: true,
         minLength: 8,
-        maxlength: 1000 
+        maxlength: 512 
     },
 
-    opentime: {
+    openTime: {
         type: String,
         required: true,
         trim: true,
-        minLength: 8,
-        maxlength: 64
+        minLength: 7,
+        maxlength: 8
     },
 
-    closetime: {
+    closeTime: {
         type: String,
         required: true,
         trim: true,
-        minLength: 8,
-        maxlength: 64
+        minLength: 7,
+        maxlength: 8
     },
-
-    location: {type: String,required: true,trim: true},
-
+    /*
+    location: {
+        type:String,
+        //required:true
+    },
+    */
+    location: {
+        type: Geolocation,
+        required: true
+    }
+    ,
     //menu: Menu,
     menu: {
         type: schema.Types.ObjectId,
@@ -67,6 +80,7 @@ const Store = new schema({
         type: schema.Types.ObjectId,
         ref: 'Warehouse'
     },
+    tags : [{type:String,required:true}],
 
     orders: [{
         type: schema.Types.ObjectId,
@@ -76,9 +90,9 @@ const Store = new schema({
     garageOwnerId: {
         type: schema.Types.ObjectId,
         ref: 'GarageOwner'
-    }
+    },
 
 });
-
+Store.index({location:"2dsphere"});
 module.exports = Store;
 //module.exports = mongoose.model('Store', StoreSchema);

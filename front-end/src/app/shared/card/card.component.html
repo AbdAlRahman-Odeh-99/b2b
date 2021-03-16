@@ -1,25 +1,49 @@
-<ion-card class="card" style="width: 18rem;">
-    <img src="{{data.image}}" class="card-img-top">
-    <div></div>
-    <div class="card-body">
-        <ion-card-header>
-            <ion-card-subtitle *ngIf="type && type === 'products'" >in stock</ion-card-subtitle>
-            <ion-card-subtitle *ngIf="type && type === 'stores'" >
-                <span *ngIf="data.isOpen" class="open">
-                    open
-                </span>
-                <span *ngIf="!data.isOpen" class="close-store">
-                    close
-                </span>
-            </ion-card-subtitle>
-            <ion-card-title>Name: {{data.name}}</ion-card-title>
-            <ion-card-subtitle *ngIf="type && type === 'stores'">
-                <span>
-                    Address: {{data.address}}
-                </span>
-            </ion-card-subtitle>
-        </ion-card-header>
-        <a *ngIf="type && type === 'stores'"  [routerLink]="[data.href, 'tabs']" class="btn btn-primary">View</a>
-        <a *ngIf="type && type === 'products'" (click)="presentModal()" class="btn btn-primary">View</a>
-    </div>
-</ion-card>
+<div style="width: 100%;" class="d-flex justify-content-center">
+    <ion-card class="card card-img-top">
+        <div class="d-flex justify-content-center flex-wrap" style="position: relative;">
+            <div style="width: 300px; height: 200px; background-color: rgb(218, 218, 218);"
+                class="d-flex justify-content-center align-items-center card-img-top">
+                <img src="{{data.image}}" style="width: 300px; height: 200px;">
+            </div>
+            <div class="card-body">
+                <div>
+                    <ion-card-header>
+                        <ion-card-subtitle *ngIf="type && type === products">
+                            <span *ngIf="data.isInStock" class="open">
+                                {{ "IN_STOCK" | translate }}
+                            </span>
+                            <span *ngIf="!data.isInStock" class="close-color">
+                                {{ "OUT_OF_STOCK" | translate }}
+                            </span>
+                        </ion-card-subtitle>
+                        <ion-card-subtitle *ngIf="type && type === stores">
+                            <span *ngIf="isOpen(data)" class="open">
+                                {{ "OPEN" | translate }}
+                            </span>
+                            <span *ngIf="!isOpen(data)" class="close-color">
+                                {{ "CLOSE" | translate }}
+                            </span>
+                        </ion-card-subtitle>
+                        <ion-card-title>{{ "NAME" | translate }}: {{data.name}}</ion-card-title>
+                        <ion-card-subtitle *ngIf="type && type === stores">
+                            <span>
+                                {{ "ADDRESS" | translate }}: {{data.address}}
+                            </span>
+                        </ion-card-subtitle>
+                    </ion-card-header>
+                    <a *ngIf="type && type === stores" (click)="routeTo(data.href)"
+                        class="btn btn-primary">{{ "VIEW" | translate }}</a>
+                    <a *ngIf="type && type === products" (click)="presentModal(data._id)" class="btn btn-primary">{{ "VIEW" | translate }}</a>
+                </div>
+            </div>
+            <div *ngIf="isOwne" style="position: absolute; right: 10px; top: 0px;">
+                <ion-button color="secondary" [routerLink]="data.editPath">
+                    <ion-icon name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button color="danger" (click)="deleteCard()">
+                    <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+            </div>
+        </div>
+    </ion-card>
+</div>

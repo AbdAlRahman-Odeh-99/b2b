@@ -1,39 +1,96 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-// import { ChatShowcaseService } from './chat-showcase.service';
+import { Message } from '@app/core/model/chat';
+import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { IonContent, NavController } from '@ionic/angular';
+import { ChatService } from '../service/chat.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-conversation',
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ConversationComponent implements OnInit {
-  messages: any[];
+export class ConversationComponent implements OnInit, OnDestroy {
+  message: string;
+  conversationId; string;
+  messages: Message[] = [];
+  chatId: string;
+  userInfo: any;
+  listenOnErrorLoading: Subscription;
+  @Input() conversationInfo: any;
+  @Output('backToContacts') backToContacts: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  @ViewChild('content') content;
+
+  constructor(
+    private navCtrl: NavController,
+    private chat: ChatService,
+    private auth: AuthService,
+  ) { }
+
+
 
   ngOnInit(): void {
+    this.conversationId = this.conversationInfo._id;
+    this.messages = [];
+    this.getContact();
+    this.userInfo = this.auth.userInfo();
+    this.chat.initChat();
+    this.listenOnErrorLoading = this.chat.listenOnErrorLoading().subscribe(res => {
+      this.messages = [];
+    })
   }
-  sendMessage(event: any) {
-    const files = !event.files ? [] : event.files.map((file) => {
-      return {
-        url: file.src,
-        type: file.type,
-        icon: 'file-text-outline',
-      };
-    });
 
-    this.messages.push({
-      text: event.message,
-      date: new Date(),
-      reply: true,
-      type: files.length ? 'file' : 'text',
-      files: files,
+
+  getContact() {
+    this.chat.getContact(this.conversationId).subscribe(res => {
+      this.chatId = res.contactBetween;
+      this.messages = [...res.messages];
+      this.getLiveMessageFotUser();
+    });
+  }
+
+  getLiveMessageFotUser() {
+    this.chat.getLiveMessageFotUser(this.chatId).subscribe((message) => {
+      this.messages.push(message)
+    })
+  }
+
+  sendMessage() {
+    const msg:Message = {
+      text: this.message,
+      date: new Date().toUTCString(),
+      reply: false,
       user: {
-        name: 'Jonh Doe',
-        avatar: 'https://i.gifer.com/no.gif',
+        name: this.userInfo.username,
+        receiver: this.userInfo._id,
+        sender: this.userInfo._id
       },
-    });
+    };
+    this.messages.push(msg);
+    this.chat.sendMessage(msg, this.chatId);
+    this.message = '';
   }
 
+  goBack() {
+    this.backToContacts.emit();
+  }
+
+  scrollBottom() {
+    this.content.scrollToBottom(500);
+  }
+
+  scrollToBottomOnInit() {
+    this.scrollBottom();
+  }
+
+  ngOnDestroy(): void {
+    this.message = '';
+    this.conversationId = null;
+    this.messages = [];
+    this.chatId = null;
+    this.userInfo = null;
+    this.listenOnErrorLoading.unsubscribe();
+  }
 }

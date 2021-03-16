@@ -1,0 +1,20 @@
+.icon:hover{
+  background-color: #f1f1f1;
+  
+  cursor: pointer;
+}
+.icon{
+  padding: 5px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  margin-top: 10px;
+}
+
+:host{
+  ::ng-deep{
+    .sc-ion-searchbar-ios-h{
+      padding-top: unset;
+      padding-bottom: unset;
+    }
+  }
+}

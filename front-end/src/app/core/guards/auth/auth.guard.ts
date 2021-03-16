@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate, CanLoad {
       return true;
     }
     this.router.navigateByUrl(`/${AppRoutingConstants.AUTH}`);
+    this.authService.clearDate();
     return false;
   }
   canLoad(

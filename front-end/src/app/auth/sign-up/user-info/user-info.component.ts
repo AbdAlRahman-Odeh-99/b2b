@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SignUpInfoService } from '@app/core/services/sign-up/sign-up-info.service';
@@ -12,14 +13,14 @@ import { AuthRoutingConstants, AppRoutingConstants, SharedRoutingConstants } fro
 export class UserInfoComponent implements OnInit {
   userInfo: FormGroup;
 
-  constructor(private signUpInfoService: SignUpInfoService, private router: Router) {
+  constructor(private signUpInfoService: SignUpInfoService, private router: Router, private translate: TranslateService) {
     this.userInfo = this.signUpInfoService.getUserInfoData();
     this.router.events.subscribe(() => {
       const url = this.router.url;
       if (url.includes(AuthRoutingConstants.CAR_INFO)) {
-       this.userInfo.patchValue({role: 'carOwner'})
+       this.userInfo.patchValue({role: 'carOwner'});
       } else if (url.includes(AuthRoutingConstants.GARAGE_INFO)) {
-        this.userInfo.patchValue({role: 'garageOwner'})
+        this.userInfo.patchValue({role: 'garageOwner'});
       }
     });
   }

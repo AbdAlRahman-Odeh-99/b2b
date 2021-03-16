@@ -1,15 +1,18 @@
-<div *ngIf="carInfo" [formGroup]="carInfo">
-  <ion-item lines="full" class="margined">
-    <ion-label position="floating">Model</ion-label>
+<div style="height: 100%;" *ngIf="carInfo" [formGroup]="carInfo">
+  <ion-item lines="full">
+    <ion-label position="floating">{{ "MODEL" | translate }}</ion-label>
     <ion-input type="text" formControlName="model"></ion-input>
   </ion-item>
-  <ion-item lines="full" class="margined">
-    <ion-label position="floating">Make</ion-label>
+  <app-input-error-message [form]="carInfo" formInput='model'></app-input-error-message>
+  <ion-item lines="full">
+    <ion-label position="floating">{{ "MAKE" | translate }}</ion-label>
     <ion-input type="text" formControlName="make"></ion-input>
   </ion-item>
-  <ion-item lines="full" class="margined">
-    <ion-label position="floating">Year</ion-label>
+  <app-input-error-message [form]="carInfo" formInput='make'></app-input-error-message>
+  <ion-item lines="full">
+    <ion-label position="floating">{{ "YEAR" | translate }}</ion-label>
     <ion-datetime display-format="YYYY" picker-format="YYYY" formControlName="year">
     </ion-datetime>
   </ion-item>
+  <app-input-error-message [form]="carInfo" formInput='year'></app-input-error-message>
 </div>

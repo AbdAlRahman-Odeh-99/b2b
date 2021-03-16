@@ -97,11 +97,12 @@ module.exports =
                                                       //{"useFindAndModify":false}
                                                     );
         if(result)
-        return result;
+            return result;
         else
-        return {error:"Error with the removing product from warehouse"};
-    },
-
+            return {error:"Error with the removing product from warehouse"};
+    }
+    ,
+    
     // added by thaer
     getWarehouse(value) {
         const result = WarehouseModel.findById({_id: value._id});
@@ -116,16 +117,19 @@ module.exports =
         if(result)
             return result;
         else
-            return {error:"Error with the finding Warehouse"};
+            return {error:"Error with the finding product inside Warehouse"};
     },
 
     async decreaseAmaountOfProduct(value) {
         let result = null;
         await WarehouseModel.findOne({_id: value._id}, {storage: {$elemMatch: {productId: value.productId}}})
         .then(warehouse => {
+            
             if(warehouse.storage[0].amount >= value.quantity) {
+                
                 warehouse.storage[0].amount -= value.quantity;
                 result = warehouse.save();
+                console.log(result);
             }
         });
         // console.log(value);
@@ -133,7 +137,25 @@ module.exports =
         if(result)
             return result;
         else
-            return {error:"Error with the finding Warehouse"};
+            return {error:"Error in decreaseAmaountOfProduct Warehouse"};
+    },
+    
+    async increaseAmaountOfProduct(value) {
+        let result = null;        
+        // console.log(value)
+        await WarehouseModel.findOne({_id: value._id}, {storage: {$elemMatch: {productId: value.productId}}})
+        .then(warehouse => {                        
+            // console.log(warehouse)
+                warehouse.storage[0].amount += value.quantity;
+                result = warehouse.save();
+                //console.log(result);
+        });
+        
+        if(result)
+            return result;
+        else
+            return {error:"Error in increaseAmaountOfProduct Warehouse"};            
     }
+    
 
 }

@@ -1,0 +1,77 @@
+<section *ngIf="newStore" class="container main-container-in-page h-100">
+  <h2>{{pageName | translate}}</h2>
+  <ion-list [formGroup]="newStore">
+    <ion-item lines="full" class="margined">
+      <ion-label position="floating">{{ "STORE_NAME" | translate }}</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <app-input-error-message [form]="newStore" formInput='name'></app-input-error-message>
+    <ion-item lines="full" class="margined">
+      <ion-label position="floating">{{ "OPEN_TIME" | translate }}</ion-label>
+      <ion-datetime
+        display-format="hh:mm A"
+        formControlName="openTime"
+      >
+      </ion-datetime>
+    </ion-item>
+    <app-input-error-message [form]="newStore" formInput='openTime'></app-input-error-message>
+    <ion-item lines="full" class="margined">
+      <ion-label position="floating">{{ "CLOSE_TIME" | translate }}</ion-label>
+      <ion-datetime
+        display-format="hh:mm A"
+        formControlName="closeTime"
+      >
+      </ion-datetime>
+    </ion-item>
+    <app-input-error-message [form]="newStore" formInput='closeTime'></app-input-error-message>
+    <ion-item lines="full" class="margined">
+      <ion-label position="floating">{{ "ADDRESS" | translate }}</ion-label>
+      <ion-input type="text" formControlName="address"></ion-input>
+    </ion-item>
+      <ion-item lines="full" class="margined">
+        <ion-label position="floating">{{ "LATITUDE" | translate }}</ion-label>
+        <ion-input type="text" formControlName="lat"></ion-input>
+      </ion-item>
+      <ion-item lines="full" class="margined">
+        <ion-label position="floating">{{ "LONGITUDE" | translate }}</ion-label>
+        <ion-input type="text" formControlName="long"></ion-input>
+      </ion-item>
+    <ion-item>
+      <ion-button
+      color="secondary"
+      (click)="applyLocationFromMap()"
+      size="default"
+    >
+      {{ "APPLY_LOCATION_FROM_MAP" | translate }}
+    </ion-button>
+    </ion-item>
+    <app-input-error-message [form]="newStore" formInput='location'></app-input-error-message>
+    <ion-item class="margined">
+      <app-upload-image
+        (getImageAsBase64)="getImageAsBase64($event)"
+      ></app-upload-image>
+    </ion-item>
+    <ion-item lines="full" class="margined">
+      <ion-label position="floating">{{ "DESCRIPTION" | translate }}</ion-label>
+      <ion-textarea rows="4" formControlName="description"></ion-textarea>
+    </ion-item>
+    <app-input-error-message [form]="newStore" formInput='description'></app-input-error-message>
+    <ion-item lines="full" class="margined">
+      <ion-label position="floating">{{ "TAGS" | translate }}</ion-label>
+      <ion-input type="text" formControlName="tags"></ion-input>
+    </ion-item>
+    <app-input-error-message [form]="newStore" formInput='tags'></app-input-error-message>
+  </ion-list>
+  <div class="d-flex justify-content-end my-3">
+    <div>
+      <ion-button
+        [disabled]="newStore.invalid || !newStore.dirty"
+        color="primary"
+        (click)="manageStore()"
+        size="default"
+      >
+        {{pageName | translate}}
+      </ion-button>
+    </div>
+  </div>
+</section>

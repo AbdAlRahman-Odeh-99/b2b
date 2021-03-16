@@ -1,40 +1,48 @@
+
 <ion-card>
   <ion-card-header>
-    <h1 style="color: black; font-weight: bold;">
-      Login
+    <h1 style="font-weight: bold;">
+      {{ "LOGIN" | translate}}
     </h1>
   </ion-card-header>
   <ion-card-content [formGroup]="loginInfo">
       <ion-item lines="full" class="margined">
-        <ion-label position="floating">Username</ion-label>
+        <ion-label position="floating">{{ "USERNAME" | translate }}</ion-label>
         <ion-input type="username" formControlName="username" required></ion-input>
       </ion-item>
+      <app-input-error-message [form]="loginInfo" formInput='username'></app-input-error-message>
       <ion-item lines="full" class="margined">
-        <ion-label position="floating">Password</ion-label>
-        <ion-input type="password" formControlName="password" required></ion-input>
+        <ion-label position="floating">{{ "PASSWORD" | translate }}</ion-label>
+        <app-Show-Hide-Password class="w-100">
+          <ion-input type="password" formControlName="password" required></ion-input>
+        </app-Show-Hide-Password>
       </ion-item>
-      <ion-item lines="none" class="margined">
+      <app-input-error-message [form]="loginInfo" formInput='password'></app-input-error-message>
+      <ion-item lines="none">
         <ion-checkbox color="primary" slot="start" formControlName="rememberMe" name="rememberMe"></ion-checkbox>
-        <ion-label>Remember me</ion-label>
+        <ion-label>{{ "REMEMBER_ME" | translate }}</ion-label>
       </ion-item>
       <ion-row>
         <ion-col class="ion-text-center">
-          <ion-button type="submit" size="default" [disabled]="!loginInfo.valid" (click)="loginFormLog()">Sign In</ion-button>
+          <ion-button type="submit"  color="primary" size="default" [disabled]="!loginInfo.valid || isLoading" (click)="loginFormLog()">
+            {{ "SIGN_IN" | translate }}
+            <ion-spinner *ngIf="isLoading"></ion-spinner>
+          </ion-button>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-center">
-          <a class="small-text" [routerLink]="pathOfResetPassword">Forgot Password</a>
+          <a class="small-text" [routerLink]="pathOfResetPassword">{{ "FORGOT_PASSWORD" | translate }}</a>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-center">
-          <a class="small-text" [routerLink]="pathOfSignUpForCarOwner">Create account as car owner</a>
+          <a class="small-text" [routerLink]="pathOfSignUpForCarOwner">{{ "CREATE_ACCOUNT_AS_CAR_OWNER" | translate }}</a>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-center">
-          <a class="small-text" [routerLink]="pathOfSignUpForG1Owner">Create account as garage owner</a>
+          <a class="small-text" [routerLink]="pathOfSignUpForG1Owner">{{ "CREATE_ACCOUNT_AS_GARAGE_OWNER" | translate }}</a>
         </ion-col>
       </ion-row>
   </ion-card-content>

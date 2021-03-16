@@ -1,22 +1,22 @@
 <section>
     <ion-list>
         <ion-radio-group (ionChange)="changeFilter($event)">
-            <ion-list-header class="d-flex justify-content-between headerFilter" (click)="showFilter($event);">
+            <ion-list-header class="d-flex justify-content-between headerFilter" (click)="showFilter();">
                 <ion-label>
-                    Filters
+                    {{ "FILTERS" | translate }}
                 </ion-label>
                 <div class="mx-2">
                     <ion-icon name="chevron-{{chevronType}}-outline"></ion-icon>
                 </div>
             </ion-list-header>
             <div *ngIf="isViewFilter">
-                <ion-item *ngFor="let item of values;">
+                <ion-item *ngFor="let item of values;let index=index;">
                     <ion-label>{{item.label}}</ion-label>
-                    <ion-radio value="{{item.value}}" ></ion-radio>
+                    <ion-radio value="{{item.value}}" name="filter"></ion-radio>
                 </ion-item>
                 <ion-item lines="none">
                     <ion-button slot="end" (click)="applyFilter()" color="success">
-                        Apply
+                        {{ "APPLY" | translate }}
                     </ion-button>
                 </ion-item>
             </div>

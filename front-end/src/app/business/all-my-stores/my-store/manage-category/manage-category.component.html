@@ -1,0 +1,98 @@
+<section style="overflow-y: auto" class="container">
+  <h2>{{ "MANAGE_CATEGORY" | translate }}</h2>
+  <ion-card class="my-5">
+    <ion-card-header class="d-flex justify-content-between">
+      <ion-card-title class="pt-2">{{ "CREATE_CATEGORY" | translate }}</ion-card-title>
+      <ion-button
+        color="success"
+        [disabled]="disableButtonSave"
+        (click)="createCategory()"
+        >{{ "CREATE" | translate }}</ion-button
+      >
+    </ion-card-header>
+    <ion-card-content [formGroup]="categoryFromGroup">
+      <div>
+        <ion-item>
+          <ion-label position="floating">{{ "NAME" | translate }}</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">{{ "TAGS" | translate }}</ion-label>
+          <ion-input formControlName="tags"></ion-input>
+        </ion-item>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="mb-5">
+    <ion-card-header class="d-flex justify-content-between">
+      <ion-card-title class="pt-2">{{ "UPDATE_CATEGORY" | translate }}</ion-card-title>
+      <ion-button
+        color="success"
+        [disabled]="!categoryFromGroupForUpdate || (categoryFromGroupForUpdate && (categoryFromGroupForUpdate.invalid || !categoryFromGroupForUpdate.dirty))"
+        (click)="UpdateCategory()"
+        >{{ "UPDATE" | translate }}</ion-button
+      >
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>{{ "SELECT_A_CATEGORY_NAME" | translate }}: </ion-label>
+        <ion-select
+          interface="alert"
+          (ionChange)="updateCategoryInfo($event)"
+          [interfaceOptions]="customPopoverOptions"
+          placeholder="Select One"
+          value="all"
+        >
+          <ion-select-option
+            *ngFor="let category of categories"
+            [value]="category._id"
+          >
+            {{ category.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="categoryFromGroupForUpdate" [formGroup]="categoryFromGroupForUpdate">
+        <ion-item>
+          <ion-label position="floating">{{ "NAME" | translate }}</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">{{ "TAGS" | translate }}</ion-label>
+          <ion-input formControlName="tags"></ion-input>
+        </ion-item>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-card class="mb-5">
+    <ion-card-header class="d-flex justify-content-between">
+      <ion-card-title class="pt-2">{{ "REMOVE_CATEGORY" | translate }}</ion-card-title>
+      <ion-button
+        color="danger"
+        [disabled] = "!categoryIdForRemoving"
+        (click)="removeCategory()"
+        >{{ "REMOVE" | translate }}</ion-button
+      >
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>{{ "SELECT_A_CATEGORY_NAME" | translate }}: </ion-label>
+        <ion-select
+          interface="alert"
+          (ionChange)="updateCategoryIdForRemoving($event)"
+          [interfaceOptions]="customPopoverOptions"
+          placeholder="Select One"
+          value="all"
+        >
+          <ion-select-option
+            *ngFor="let category of categories"
+            [value]="category._id"
+          >
+            {{ category.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</section>

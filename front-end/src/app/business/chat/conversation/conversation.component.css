@@ -1,0 +1,31 @@
+.message{
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+  white-space: pre-wrap;
+}
+.sent-message{
+  background: rgb(75, 202, 1);
+  color: white;
+}
+.received-message{
+  background: gray;
+  color: white;
+}
+
+.message-input{
+  /* width: 100%; */
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 5px;
+}
+.msg-time{
+  color: #dfdfdf;
+  float: right;
+  font-size: smaller;
+}
+
+@media screen and (min-width: 720px) {
+  .manage-back-btn {
+    display: none;
+  }
+}

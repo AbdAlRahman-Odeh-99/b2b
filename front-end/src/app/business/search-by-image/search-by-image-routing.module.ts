@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SearchByImageComponent } from "./search-by-image.component";
+import { SearchByImageComponent } from './search-by-image.component';
 
 const routes: Routes = [{ path: '', component: SearchByImageComponent }];
 

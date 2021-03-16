@@ -1,3 +1,4 @@
+import { StoreInfoRoutingConstants } from './../../../core/constants/routes';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -5,33 +6,28 @@ import { InfoComponent } from './info.component';
 import { AboutStoreComponent } from './component/about-store/about-store.component';
 import { OffersComponent } from './component/offers/offers.component';
 import { ProductsComponent } from './component/products/products.component';
-import { CategoriesComponent } from './component/categories/categories.component';
 
 const routes: Routes = [
   {
-    path: ':id/tabs',
+    path: `:${StoreInfoRoutingConstants.ID}/${StoreInfoRoutingConstants.TABS}`,
     component: InfoComponent,
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'about-store',
+        redirectTo: StoreInfoRoutingConstants.ABOUT_STORE,
       },
       {
-        path: 'about-store',
+        path: StoreInfoRoutingConstants.ABOUT_STORE,
         component: AboutStoreComponent,
       },
       {
-        path: 'offers',
+        path: StoreInfoRoutingConstants.OFFERS,
         component: OffersComponent,
       },
       {
-        path: 'products',
+        path: StoreInfoRoutingConstants.PRODUCTS,
         component: ProductsComponent,
-      },
-      {
-        path: 'categories',
-        component: CategoriesComponent,
       },
     ]
   }

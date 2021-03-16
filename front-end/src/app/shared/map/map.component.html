@@ -1,0 +1,20 @@
+<section style="height: 100%; overflow-y: auto;">
+  <ion-header [translucent]="true">
+    <ion-toolbar color="warning">
+      <ion-button (click)="loadMap()" shape="round" color="dark">
+        <ion-icon slot="start" name="locate"></ion-icon>
+        {{ "WHERE_I_AM" | translate}}
+      </ion-button>
+      <ion-title slot="end">
+        <ion-button color="success" (click)="applyLocation()"> {{ "APPLY_LOCATION" | translate}}
+        </ion-button>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div class="map-wrapper">
+    <div id="map_center">
+      <img src="assets/icon/location-marker.jpeg" />
+    </div>
+    <div #map id="map"></div>
+  </div>
+</section>

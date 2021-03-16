@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -15,15 +16,16 @@ export class CreateCarOwnerComponent implements OnInit {
   constructor(
     private signUpInfoService: SignUpInfoService,
     private router: Router,
-    
+    private translate: TranslateService
+
   ) {
-   if (this.signUpInfoService.getUserInfoData().invalid) {
-     this.router.navigateByUrl(`${AppRoutingConstants.AUTH}/${AuthRoutingConstants.SIGN_UP}/${SharedRoutingConstants.CAR}/${AuthRoutingConstants.USER_INFO}`);
-     return;
-   }
+    this.carInfo = this.signUpInfoService.getCarInfoData();
+    if (this.signUpInfoService.getUserInfoData().invalid) {
+       this.router.navigateByUrl(`${AppRoutingConstants.AUTH}/${AuthRoutingConstants.SIGN_UP}/${SharedRoutingConstants.CAR}/${AuthRoutingConstants.USER_INFO}`);
+      return;
+    }
   }
 
-  ngOnInit() { 
-    this.carInfo = this.signUpInfoService.getCarInfoData();
+  ngOnInit() {
   }
 }

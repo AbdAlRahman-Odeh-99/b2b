@@ -1,5 +1,17 @@
-<div class="d-flex justify-content-start">
-    <ion-label>Upload Image</ion-label>
-    <input type="file" accept="image/*" #file class="d-none" (change)="uploadImage($event)">
-    <ion-button expand="full" color="secondary" (click)="file.click()">Upload</ion-button>
+<div class="d-flex justify-content-around">
+  <div class="mt-2 mx-2">
+    <ion-label>{{ "UPLOAD_IMAGE" | translate }}</ion-label>
+    <input
+      type="file"
+      accept="image/*"
+      #file
+      class="d-none"
+      (change)="uploadImage($event)"
+    />
+  </div>
+  <div>
+    <ion-button expand="full" color="secondary" (click)="file.click()"
+      >{{ "UPLOAD" | translate}}</ion-button
+    >
+  </div>
 </div>

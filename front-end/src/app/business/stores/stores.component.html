@@ -1,15 +1,16 @@
-<section class="main-container-in-page">
-    <span>
-        <!-- {{ 'TEST' | translate }} -->
-    </span>
-    <ng-template [ngIf]="stores" [ngIfElse]="loading">
-        <div class="d-flex flex-wrap  justify-content-center">
+<section class="container main-container-in-page">
+    <ng-template [ngIf]="!isLoading" [ngIfElse]="loading">
+        <ng-template [ngIf]="stores && stores.length !== 0" [ngIfElse]="noDataFound">
             <div *ngFor="let store of stores">
                 <app-card [data]="store" [type]="'stores'"></app-card>
             </div>
-        </div>
+        </ng-template>
     </ng-template>
 </section>
+
+<ng-template #noDataFound>
+    <app-no-data-found class="h-100 w-100"></app-no-data-found>
+</ng-template>
 
 <ng-template #loading>
     <app-loading [type]='"card"'></app-loading>

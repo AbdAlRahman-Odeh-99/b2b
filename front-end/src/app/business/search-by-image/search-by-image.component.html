@@ -1,1 +1,28 @@
-<p>search-by-image works!</p>
+<section class="container main-container-in-page">
+  <div
+    class="w-100 d-flex justify-content-center flex-wrap pt-2 border-bottom"
+  >
+    <app-upload-image
+      class="d-flex align-items-center mx-2"
+      (getImageAsBase64)="getImageAsBase64($event)"
+    ></app-upload-image>
+    <ion-img [src]="image" style="height: 200px; width: 200px"></ion-img>
+    <div class="d-flex align-items-center mx-2">
+      <ion-button
+        [disabled]="disableSaerch"
+        expand="full"
+        color="secondary"
+        (click)="search()"
+      >
+        <ion-spinner *ngIf="isLoading"></ion-spinner>
+        {{ "SEARCH" | translate }}</ion-button
+      >
+    </div>
+  </div>
+  <div class="px-3" *ngIf="isShowResult">
+    <h3>The result is: {{ imageNameResult }}</h3>
+  </div>
+  <div>
+    <app-card *ngFor="let product of resultOfSearch" [data]="product" [type]="'products'"></app-card>
+  </div>
+</section>

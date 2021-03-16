@@ -1,11 +1,13 @@
+//Requiring the validation package
 const validator = require('validator');
-
+//Exporting the validation method
 module.exports = {
-    
+   //A method to validate the warehouse information
    validateWarehouseInfo(warehouse)
    {
-    if(!validator.matches(warehouse.amount,/(^[\d]{1,4}$)/))
-           return "invalid warehouse'sproduct amount";
-    return "pass";
+      if(warehouse.amount === undefined || !validator.matches(warehouse.amount.toString(),/(^[\d]{1,4}$)/))
+         return "Invalid warehouse's product amount !";
+
+      return "pass";
    }
 }

@@ -6,7 +6,7 @@ const User = new schema({
 
     fullName: {
         type: String,
-        minLength: 8,
+        minLength: 3,
         maxlength: 64,
         required: true,
         trim: true
@@ -44,13 +44,21 @@ const User = new schema({
 
     address: {
         type: String,
-        require: true
+        require: true,
+        trim: true,
+        minlength: 4,
+        maxlength: 9
     },
 
     role: {
         type: String,
         require: true,
         enum: ["admin", "garageOwner", "carOwner", "waitingUser"]
+    },
+
+    logged: {
+        type: Boolean,
+        default: false
     }
 
 });

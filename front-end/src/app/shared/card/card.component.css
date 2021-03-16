@@ -6,10 +6,16 @@
     padding: 5px;
 }
 
-.close-store{
+.close-color{
     background-color: red;
     color: white;
     border:  1px solid transparent;
     border-radius: 5px;
     padding: 5px;
+}
+
+@media screen and (max-width: 960px) {
+    .card-img-top{
+        width: 300px !important;
+    }
 }

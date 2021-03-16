@@ -1,4 +1,4 @@
-import { AuthService } from './../services/auth.service';
+import { AuthService } from '@app/core/services/auth/auth.service';
 import { IonicModule, NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
   }
 
   loginFormLog() {
-    console.log(this.loginInfo);
   }
 
   /* login(form: NgForm) { */

@@ -8,13 +8,24 @@ const schema = mongoose.Schema;
 const GarageOwner = new schema({
     user: {
         type: schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required:true
     },
     stores: [{
         type: schema.Types.ObjectId,
-        ref: 'Store'
+        ref: 'Store',
+        required:true
     }],
-    isVerified: {type: Boolean}
+    isVerified: {type: Boolean},
+    reportId: {
+        type: schema.Types.ObjectId,
+        ref: 'Report'
+    },
+    isTrusted: {
+        type:Boolean,
+        requied:true,
+        default:false
+    }
 });
 
 module.exports = GarageOwner;

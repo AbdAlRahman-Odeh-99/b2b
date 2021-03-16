@@ -24,6 +24,10 @@ const Order = new schema({
     status: {
         type: String,
         enum: ["pending", "cancel", "delivered"]
+    },
+    storeId: {
+        type: schema.Types.ObjectId,
+        ref: 'Store'
     }
 });
 

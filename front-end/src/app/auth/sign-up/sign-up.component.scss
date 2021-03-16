@@ -1,12 +1,13 @@
 .height-page {
   display: block !important;
   .user-info {
-    height: 350px !important;
+    height: 500px !important;
   }
   .car-info {
-    height: 250px !important;
+    height: 350px !important;
   }
   .garage-info {
-    height: 520px !important;
+    // min-height: calc(100% - 150px);
+    // overflow-y: auto;
   }
 }

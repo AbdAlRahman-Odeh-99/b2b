@@ -11,11 +11,11 @@ export class HomeComponent implements OnInit {
   data = data;
 
 
-  constructor(private authService:AuthService ) {
+  constructor(private authService: AuthService ) {
     this.data = this.data.map((item) => {
       return { ...item, href: `/product` };
     });
-    console.log(this.authService.userInfo())
+    
   }
 
   ngOnInit() {
